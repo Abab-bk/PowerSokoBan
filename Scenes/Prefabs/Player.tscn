@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://huswsv6iufo6"]
+
+[ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
+[ext_resource type="Texture2D" uid="uid://14r433dvrgg5" path="res://icon.svg" id="2_bbad8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7ccg"]
+size = Vector2(120, 118)
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_6s7uw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bbad8")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_u7ccg")
