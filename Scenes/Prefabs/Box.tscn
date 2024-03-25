@@ -1,19 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bita3f5l84jvj"]
+[gd_scene load_steps=5 format=3 uid="uid://bita3f5l84jvj"]
 
-[ext_resource type="Script" path="res://Scripts/Prefabs/Actor.cs" id="1_k7det"]
+[ext_resource type="Script" path="res://Scripts/Prefabs/Box.cs" id="1_jt6ju"]
 [ext_resource type="Texture2D" uid="uid://14r433dvrgg5" path="res://icon.svg" id="2_4wckd"]
+[ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_xh6xd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j4uuf"]
-size = Vector2(126, 128)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_327si"]
+size = Vector2(126, 124)
 
 [node name="Box" type="Node2D"]
-script = ExtResource("1_k7det")
+script = ExtResource("1_jt6ju")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.164706, 1, 0.164706, 1)
 texture = ExtResource("2_4wckd")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]
+script = ExtResource("3_xh6xd")
+Actor = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("RectangleShape2D_j4uuf")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActorBody"]
+shape = SubResource("RectangleShape2D_327si")

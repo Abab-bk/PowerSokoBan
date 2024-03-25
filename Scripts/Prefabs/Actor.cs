@@ -1,5 +1,7 @@
-﻿using Godot.Collections;
+﻿using System;
+using Godot.Collections;
 using PowerSokoBan.Scripts.Classes;
+using PowerSokoBan.Scripts.Prefabs.Components;
 
 namespace PowerSokoBan.Scripts.Prefabs;
 
@@ -56,8 +58,25 @@ public partial class Actor : Godot.Node2D
     {
         _rayCast2D.TargetPosition = (_inputs[dir] * _moveDistance);
         _rayCast2D.ForceRaycastUpdate();
-        
-        return !_rayCast2D.IsColliding();
+
+        if (_rayCast2D.IsColliding())
+        {
+            var collider = _rayCast2D.GetCollider();
+            if (collider is ActorBody)
+            {
+                ActorBody actorBody = (ActorBody) collider;
+                if (actorBody.Actor is Box == false)
+                {
+                    return false;
+                }
+
+                Box boxCollider = (Box)actorBody.Actor;
+                boxCollider.MoveTo(dir);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 
     protected void RegisterCommand(ICommand command)
