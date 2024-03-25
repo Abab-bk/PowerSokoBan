@@ -62,16 +62,12 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.X -= actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Left);
         }
 
         public void Undo(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.X += actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Right);
         }
     }
 
@@ -79,16 +75,12 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.X += actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Right);
         }
 
         public void Undo(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.X -= actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Left);
         }
     }
 
@@ -96,16 +88,12 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.Y -= actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Up);
         }
 
         public void Undo(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.Y += actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Down);
         }
     }
 
@@ -113,16 +101,12 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.Y += actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Down);
         }
 
         public void Undo(Actor actor)
         {
-            var newPos = actor.GlobalPosition;
-            newPos.Y -= actor.MoveDistance;
-            actor.GlobalPosition = newPos;
+            actor.MoveTo(Actor.Direction.Up);
         }
     }
 }
