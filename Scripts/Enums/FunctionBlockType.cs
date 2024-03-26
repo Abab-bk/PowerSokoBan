@@ -3,7 +3,10 @@
 public enum FunctionBlockType
 {
     None,
-    Left,
-    Right,
-    Up,
+    White,
+    Red,
+    Blue,
+    Yellow,
+    Green,
 }
+

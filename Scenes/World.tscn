@@ -109,4 +109,4 @@ layer_0/tile_data = PackedInt32Array(-262153, 0, 0, -262152, 0, 0, -262151, 0, 0
 position = Vector2(433, 0)
 
 [node name="FunctionBlock" parent="." instance=ExtResource("5_77pnx")]
-position = Vector2(222, 222)
+position = Vector2(0, 133)

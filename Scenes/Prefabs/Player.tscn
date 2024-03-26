@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://huswsv6iufo6"]
+[gd_scene load_steps=7 format=3 uid="uid://huswsv6iufo6"]
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
 [ext_resource type="Texture2D" uid="uid://daqan8rbrsx2p" path="res://Assets/Textures/Player.png" id="2_ewdf3"]
+[ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_jtrh1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lacxu"]
 atlas = ExtResource("2_ewdf3")
@@ -27,25 +28,29 @@ texture = SubResource("AtlasTexture_h0isp")
 
 [node name="Node2D" type="Node2D" parent="Node2D"]
 
-[node name="DowntFunction" type="Sprite2D" parent="Node2D/Node2D"]
+[node name="DownFunction" type="Sprite2D" parent="Node2D/Node2D"]
+unique_name_in_owner = true
 position = Vector2(0, 12)
 texture = ExtResource("2_ewdf3")
 region_enabled = true
 region_rect = Rect2(73, 94, 46, 34)
 
 [node name="LeftFunction" type="Sprite2D" parent="Node2D/Node2D"]
+unique_name_in_owner = true
 position = Vector2(-12, 0)
 texture = ExtResource("2_ewdf3")
 region_enabled = true
 region_rect = Rect2(64, 137, 34, 46)
 
 [node name="RightFunction" type="Sprite2D" parent="Node2D/Node2D"]
+unique_name_in_owner = true
 position = Vector2(12, 0)
 texture = ExtResource("2_ewdf3")
 region_enabled = true
 region_rect = Rect2(94, 201, 34, 46)
 
 [node name="UpFunction" type="Sprite2D" parent="Node2D/Node2D"]
+unique_name_in_owner = true
 position = Vector2(0, -12)
 texture = ExtResource("2_ewdf3")
 region_enabled = true
@@ -53,7 +58,20 @@ region_rect = Rect2(73, 0, 46, 34)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("3_jtrh1")
+Actor = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActorBody"]
 shape = SubResource("RectangleShape2D_u7ccg")
+debug_color = Color(0.988235, 0, 0.301961, 0.419608)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_u7ccg")
+debug_color = Color(0.988235, 0, 0.301961, 0.419608)

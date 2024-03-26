@@ -5,8 +5,8 @@ namespace PowerSokoBan.Scripts.Classes;
 
 public struct FunctionBlockInfo
 {
-    public int FunctionBlockValue;
-    public FunctionBlockType FunctionBlockType;
+    public readonly int FunctionBlockValue;
+    public readonly FunctionBlockType FunctionBlockType;
     public Actor.Direction Direction;
     
     public FunctionBlockInfo(int functionBlockValue, FunctionBlockType functionBlockType, Actor.Direction direction)
@@ -15,5 +15,9 @@ public struct FunctionBlockInfo
         FunctionBlockType = functionBlockType;
         Direction = direction;
     }
-    
+
+    public void SetDirection(Actor.Direction direction)
+    {
+        Direction = direction;
+    }
 }

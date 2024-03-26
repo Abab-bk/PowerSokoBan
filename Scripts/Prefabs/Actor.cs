@@ -1,6 +1,7 @@
 ﻿using System;
 using Godot.Collections;
 using PowerSokoBan.Scripts.Classes;
+using PowerSokoBan.Scripts.Enums;
 using PowerSokoBan.Scripts.Prefabs.Components;
 
 namespace PowerSokoBan.Scripts.Prefabs;
@@ -10,6 +11,7 @@ using Godot;
 [GlobalClass]
 public partial class Actor : Godot.Node2D
 {
+    protected readonly Master Master = Master.GetInstance();
     private int _moveDistance = 64;
     private bool _moving = false;
     
@@ -25,16 +27,17 @@ public partial class Actor : Godot.Node2D
     };
     
     
-    private System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> _functionBlockInfos;
+    protected System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> FunctionBlockInfos;
 
     public void AddFunctionBlock(FunctionBlockInfo functionBlockInfo, Direction direction)
     {
-        _functionBlockInfos[direction] = functionBlockInfo;
+        FunctionBlockInfos[direction] = functionBlockInfo;
+        UpdateUi();
     }
     
     private int GetMoveDistance(Direction dir)
     {
-        if (_functionBlockInfos.ContainsKey(dir)) return (_moveDistance + _functionBlockInfos[dir].FunctionBlockValue);
+        if (FunctionBlockInfos.ContainsKey(dir)) return (_moveDistance * FunctionBlockInfos[dir].FunctionBlockValue);
         return _moveDistance;
     }
     
@@ -48,6 +51,7 @@ public partial class Actor : Godot.Node2D
     
     public override void _Ready()
     {
+        FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
         _commandPool = new CommandPool(this);
         
@@ -55,20 +59,27 @@ public partial class Actor : Godot.Node2D
         
         Position = Position.Snapped(Vector2.One * _moveDistance);
     }
-    
-    public async void MoveTo(Direction dir)
+
+    protected virtual void UpdateUi()
+    {
+    }
+
+    public virtual async void MoveTo(Direction dir)
     {
         if (!AllowMoveTo(dir)) return;
         if (_moving) return;
+        
         Vector2 newPos = GlobalPosition + _inputs[dir] * GetMoveDistance(dir);
         Tween tween = CreateTween();
+        
         _moving = true;
         tween.TweenProperty(this, "global_position", newPos, 0.2f);
         await ToSignal(tween, "finished");
         _moving = false;
+        
     }
-
-    public bool AllowMoveTo(Direction dir)
+    
+    private bool AllowMoveTo(Direction dir)
     {
         _rayCast2D.TargetPosition = (_inputs[dir] * _moveDistance);
         _rayCast2D.ForceRaycastUpdate();
@@ -108,4 +119,38 @@ public partial class Actor : Godot.Node2D
         _commandPool.Redo();
     }
     
+    
+    protected string DirectionToString(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.Up:
+                return "UpFunctions";
+            case Direction.Down:
+                return "DownFunctions";
+            case Direction.Left:
+                return "LeftFunctions";
+            case Direction.Right:
+                return "RightFunctions";
+        }
+        
+        return "UpFunctions";
+    }
+
+    protected string FunctionBlockTypeToString(FunctionBlockType type)
+    {
+        switch (type)
+        {
+            case FunctionBlockType.Red:
+                return "Red";
+            case FunctionBlockType.Blue:
+                return "Blue";
+            case FunctionBlockType.Green:
+                return "Green";
+            case FunctionBlockType.Yellow:
+                return "Yellow";
+        }
+        
+        return "Red";
+    }
 }
