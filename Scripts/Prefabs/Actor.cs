@@ -11,7 +11,10 @@ using Godot;
 [GlobalClass]
 public partial class Actor : Godot.Node2D
 {
+    protected delegate void EnterNextLevelEventHandler();
+    
     protected readonly Master Master = Master.GetInstance();
+    protected EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
     private int _moveDistance = 64;
     private bool _moving = false;
     
@@ -56,8 +59,11 @@ public partial class Actor : Godot.Node2D
         _commandPool = new CommandPool(this);
         
         AddChild(_rayCast2D);
+
+        _rayCast2D.CollisionMask = 0;
+        _rayCast2D.SetCollisionMaskValue(2, true);
         
-        Position = Position.Snapped(Vector2.One * _moveDistance);
+        GlobalPosition = GlobalPosition.Snapped(Vector2.One * _moveDistance);
     }
 
     protected virtual void UpdateUi()
@@ -81,7 +87,7 @@ public partial class Actor : Godot.Node2D
     
     private bool AllowMoveTo(Direction dir)
     {
-        _rayCast2D.TargetPosition = (_inputs[dir] * _moveDistance);
+        _rayCast2D.TargetPosition = (_inputs[dir] * GetMoveDistance(dir));
         _rayCast2D.ForceRaycastUpdate();
 
         if (_rayCast2D.IsColliding())

@@ -1,8 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://cg4hldwwnqrb"]
+[gd_scene load_steps=4 format=3 uid="uid://cg4hldwwnqrb"]
 
-[ext_resource type="Script" path="res://Scripts/Prefabs/Actor.cs" id="1_tessm"]
+[ext_resource type="Script" path="res://Scripts/Prefabs/WinPoint.cs" id="1_wx1rm"]
+[ext_resource type="Texture2D" uid="uid://bkkfr6iaujfub" path="res://Assets/Textures/Goal.png" id="2_llkxr"]
 
-[node name="WinPoint" type="Node2D"]
-script = ExtResource("1_tessm")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sqjsc"]
+size = Vector2(64, 64)
+
+[node name="WinPoint" type="Node2D" node_paths=PackedStringArray("_area2D")]
+script = ExtResource("1_wx1rm")
+_area2D = NodePath("Area2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_llkxr")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_sqjsc")

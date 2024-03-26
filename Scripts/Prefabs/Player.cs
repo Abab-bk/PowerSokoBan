@@ -19,6 +19,8 @@ namespace PowerSokoBan.Scripts.Prefabs
         public override void _Ready()
         {
             base._Ready();
+
+            EnterNextLevelEvent += EnterNextLevel;
             
             _directionSprites = new Godot.Collections.Dictionary<Direction, Sprite2D>()
             {
@@ -83,6 +85,12 @@ namespace PowerSokoBan.Scripts.Prefabs
                 String typePath = FunctionBlockTypeToString(functionBlockInfo.FunctionBlockType);
                 _directionSprites[functionBlockInfo.Direction].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/{typePath}.tres") as Texture2D;
             }
+        }
+
+        public void EnterNextLevel()
+        {
+            GD.Print("进入下一层");
+            GlobalPosition = Vector2.Zero;
         }
     }
 

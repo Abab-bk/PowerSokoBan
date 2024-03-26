@@ -1,4 +1,5 @@
-﻿using PowerSokoBan.Scripts.Prefabs;
+﻿using Godot;
+using PowerSokoBan.Scripts.Prefabs;
 
 namespace PowerSokoBan.Scripts.Classes;
 

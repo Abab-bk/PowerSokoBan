@@ -60,7 +60,7 @@ region_rect = Rect2(73, 0, 46, 34)
 
 [node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]
 collision_layer = 8
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("3_jtrh1")
 Actor = NodePath("..")
 
