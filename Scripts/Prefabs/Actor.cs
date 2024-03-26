@@ -10,7 +10,7 @@ using Godot;
 [GlobalClass]
 public partial class Actor : Godot.Node2D
 {
-    private int _moveDistance = 100;
+    private int _moveDistance = 64;
     private bool _moving = false;
     
     private CommandPool _commandPool;

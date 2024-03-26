@@ -1,18 +1,20 @@
 [gd_scene load_steps=5 format=3 uid="uid://bita3f5l84jvj"]
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Box.cs" id="1_jt6ju"]
-[ext_resource type="Texture2D" uid="uid://14r433dvrgg5" path="res://icon.svg" id="2_4wckd"]
+[ext_resource type="Texture2D" uid="uid://ci5cgogvvi3fi" path="res://Assets/Textures/Token1.png" id="2_a70cp"]
 [ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_xh6xd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_327si"]
-size = Vector2(126, 124)
+size = Vector2(64, 64)
 
 [node name="Box" type="Node2D"]
 script = ExtResource("1_jt6ju")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.164706, 1, 0.164706, 1)
-texture = ExtResource("2_4wckd")
+texture = ExtResource("2_a70cp")
+region_enabled = true
+region_rect = Rect2(66, 2, 60, 60)
 
 [node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]
 script = ExtResource("3_xh6xd")

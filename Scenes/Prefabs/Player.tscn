@@ -1,16 +1,55 @@
-[gd_scene load_steps=4 format=3 uid="uid://huswsv6iufo6"]
+[gd_scene load_steps=6 format=3 uid="uid://huswsv6iufo6"]
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
-[ext_resource type="Texture2D" uid="uid://14r433dvrgg5" path="res://icon.svg" id="2_bbad8"]
+[ext_resource type="Texture2D" uid="uid://daqan8rbrsx2p" path="res://Assets/Textures/Player.png" id="2_ewdf3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lacxu"]
+atlas = ExtResource("2_ewdf3")
+region = Rect2(0, 256, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0isp"]
+atlas = ExtResource("2_ewdf3")
+region = Rect2(256, 256, 64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u7ccg"]
-size = Vector2(120, 118)
+size = Vector2(64, 64)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_6s7uw")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_bbad8")
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Ground" type="Sprite2D" parent="Node2D"]
+texture = SubResource("AtlasTexture_lacxu")
+
+[node name="Outline" type="Sprite2D" parent="Node2D"]
+texture = SubResource("AtlasTexture_h0isp")
+
+[node name="Node2D" type="Node2D" parent="Node2D"]
+
+[node name="DowntFunction" type="Sprite2D" parent="Node2D/Node2D"]
+position = Vector2(0, 12)
+texture = ExtResource("2_ewdf3")
+region_enabled = true
+region_rect = Rect2(73, 94, 46, 34)
+
+[node name="LeftFunction" type="Sprite2D" parent="Node2D/Node2D"]
+position = Vector2(-12, 0)
+texture = ExtResource("2_ewdf3")
+region_enabled = true
+region_rect = Rect2(64, 137, 34, 46)
+
+[node name="RightFunction" type="Sprite2D" parent="Node2D/Node2D"]
+position = Vector2(12, 0)
+texture = ExtResource("2_ewdf3")
+region_enabled = true
+region_rect = Rect2(94, 201, 34, 46)
+
+[node name="UpFunction" type="Sprite2D" parent="Node2D/Node2D"]
+position = Vector2(0, -12)
+texture = ExtResource("2_ewdf3")
+region_enabled = true
+region_rect = Rect2(73, 0, 46, 34)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
