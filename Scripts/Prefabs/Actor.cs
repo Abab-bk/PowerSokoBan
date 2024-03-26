@@ -24,6 +24,20 @@ public partial class Actor : Godot.Node2D
         {Direction.Right, Vector2.Right},
     };
     
+    
+    private System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> _functionBlockInfos;
+
+    public void AddFunctionBlock(FunctionBlockInfo functionBlockInfo, Direction direction)
+    {
+        _functionBlockInfos[direction] = functionBlockInfo;
+    }
+    
+    private int GetMoveDistance(Direction dir)
+    {
+        if (_functionBlockInfos.ContainsKey(dir)) return (_moveDistance + _functionBlockInfos[dir].FunctionBlockValue);
+        return _moveDistance;
+    }
+    
     public enum Direction
     {
         Up,
@@ -41,12 +55,12 @@ public partial class Actor : Godot.Node2D
         
         Position = Position.Snapped(Vector2.One * _moveDistance);
     }
-
+    
     public async void MoveTo(Direction dir)
     {
         if (!AllowMoveTo(dir)) return;
         if (_moving) return;
-        Vector2 newPos = GlobalPosition + _inputs[dir] * _moveDistance;
+        Vector2 newPos = GlobalPosition + _inputs[dir] * GetMoveDistance(dir);
         Tween tween = CreateTween();
         _moving = true;
         tween.TweenProperty(this, "global_position", newPos, 0.2f);

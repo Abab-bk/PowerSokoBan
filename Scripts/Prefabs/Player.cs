@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using PowerSokoBan.Scripts.Classes;
+using PowerSokoBan.Scripts.Enums;
 using PowerSokoBan.Scripts.Prefabs;
 
 namespace PowerSokoBan.Scripts.Prefabs
@@ -11,7 +13,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         private RightMoveCommand _rightMoveCommand;
         private UpMoveCommand _upMoveCommand;
         private DownMoveCommand _downMoveCommand;
-        
+
         public override void _Ready()
         {
             base._Ready();

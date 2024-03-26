@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://owrur6u8dvr1"]
+
+[ext_resource type="Script" path="res://Scripts/Prefabs/FuntionBlock.cs" id="1_co700"]
+[ext_resource type="Texture2D" uid="uid://ci5cgogvvi3fi" path="res://Assets/Textures/Token1.png" id="2_mxsa8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m5uc3"]
+size = Vector2(64, 64)
+
+[node name="FunctionBlock" type="Node2D"]
+script = ExtResource("1_co700")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_mxsa8")
+region_enabled = true
+region_rect = Rect2(66, 2, 60, 60)
+
+[node name="ActorArea" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActorArea"]
+shape = SubResource("RectangleShape2D_m5uc3")

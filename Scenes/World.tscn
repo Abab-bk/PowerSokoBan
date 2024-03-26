@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://c23k0frd5d24m"]
+[gd_scene load_steps=9 format=3 uid="uid://c23k0frd5d24m"]
 
 [ext_resource type="PackedScene" uid="uid://huswsv6iufo6" path="res://Scenes/Prefabs/Player.tscn" id="1_l78e0"]
 [ext_resource type="Texture2D" uid="uid://c8gj80j0w12rd" path="res://Assets/Textures/WallTileset.png" id="1_soy35"]
 [ext_resource type="Texture2D" uid="uid://nny21qnauyf8" path="res://Assets/Textures/Map.png" id="2_r87hk"]
 [ext_resource type="PackedScene" uid="uid://bita3f5l84jvj" path="res://Scenes/Prefabs/Box.tscn" id="3_cpcx3"]
+[ext_resource type="PackedScene" uid="uid://owrur6u8dvr1" path="res://Scenes/Prefabs/FunctionBlock.tscn" id="5_77pnx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yu7uk"]
 texture = ExtResource("1_soy35")
@@ -106,3 +107,6 @@ layer_0/tile_data = PackedInt32Array(-262153, 0, 0, -262152, 0, 0, -262151, 0, 0
 
 [node name="Box" parent="." instance=ExtResource("3_cpcx3")]
 position = Vector2(433, 0)
+
+[node name="FunctionBlock" parent="." instance=ExtResource("5_77pnx")]
+position = Vector2(222, 222)

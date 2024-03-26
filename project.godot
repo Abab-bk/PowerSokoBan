@@ -40,6 +40,7 @@ X={
 
 2d_physics/layer_1="Actor"
 2d_physics/layer_2="Wall"
+2d_physics/layer_3="FunctionBlocks"
 
 [rendering]
 
