@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c23k0frd5d24m"]
+[gd_scene load_steps=11 format=3 uid="uid://c23k0frd5d24m"]
 
 [ext_resource type="Texture2D" uid="uid://dxssthc04jubt" path="res://Assets/Textures/BkgGreen.png" id="1_3dxu4"]
 [ext_resource type="Script" path="res://Scripts/World.cs" id="1_eef1p"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c8gj80j0w12rd" path="res://Assets/Textures/WallTileset.png" id="1_soy35"]
 [ext_resource type="Texture2D" uid="uid://nny21qnauyf8" path="res://Assets/Textures/Map.png" id="2_r87hk"]
 [ext_resource type="PackedScene" uid="uid://bita3f5l84jvj" path="res://Scenes/Prefabs/Box.tscn" id="3_cpcx3"]
-[ext_resource type="PackedScene" uid="uid://owrur6u8dvr1" path="res://Scenes/Prefabs/FunctionBlock.tscn" id="5_77pnx"]
 [ext_resource type="PackedScene" uid="uid://cg4hldwwnqrb" path="res://Scenes/Prefabs/WinPoint.tscn" id="7_iom0g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yu7uk"]
@@ -114,8 +113,9 @@ terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/2 = SubResource("TileSetAtlasSource_bwnut")
 sources/0 = SubResource("TileSetAtlasSource_yu7uk")
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("_functionBlocks")]
 script = ExtResource("1_eef1p")
+_functionBlocks = NodePath("FunctionBlocks")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_3dxu4")
@@ -126,26 +126,24 @@ rendering_quadrant_size = 50
 format = 2
 layer_0/tile_data = PackedInt32Array(-262147, 0, 0, -262146, 0, 0, -262145, 0, 0, -196611, 0, 0, -131075, 0, 0, -65539, 0, 0, -3, 0, 0, -327680, 0, 0, -327679, 0, 0, -262143, 0, 0, -131071, 0, 0, -196606, 0, 0, -262142, 0, 0, -327678, 0, 0, -131070, 0, 0, -65534, 0, 0, 65533, 0, 0, 131069, 0, 0, 2, 0, 0, -327677, 0, 0, -262141, 0, 0, -196605, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, 131075, 0, 0, 196605, 0, 0, 196604, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131076, 0, 0, -196612, 0, 0, -262148, 0, 0, -327684, 0, 0, -327683, 0, 0, -327682, 0, 0, -327681, 0, 0, -393216, 0, 0, -393215, 0, 0, -393214, 0, 0, -393213, 0, 0)
 
-[node name="Player" parent="." instance=ExtResource("1_l78e0")]
-position = Vector2(32, -32)
-
 [node name="Box" parent="." instance=ExtResource("3_cpcx3")]
 position = Vector2(433, 0)
 
-[node name="FunctionBlock" parent="." instance=ExtResource("5_77pnx")]
-position = Vector2(32, -97)
-
-[node name="FunctionBlock2" parent="." node_paths=PackedStringArray("ActorArea") instance=ExtResource("5_77pnx")]
-position = Vector2(-94, -97)
-ActorArea = NodePath("../FunctionBlock/ActorArea")
-
-[node name="FunctionBlock3" parent="." node_paths=PackedStringArray("ActorArea") instance=ExtResource("5_77pnx")]
-position = Vector2(-94, -224)
-ActorArea = NodePath("../FunctionBlock/ActorArea")
-
-[node name="FunctionBlock4" parent="." node_paths=PackedStringArray("ActorArea") instance=ExtResource("5_77pnx")]
-position = Vector2(32, -224)
-ActorArea = NodePath("../FunctionBlock/ActorArea")
-
 [node name="WinPoint" parent="." instance=ExtResource("7_iom0g")]
 position = Vector2(97, -158)
+
+[node name="FunctionBlocks" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="FunctionBlocks"]
+position = Vector2(-104, -231)
+
+[node name="Marker2D2" type="Marker2D" parent="FunctionBlocks"]
+position = Vector2(32, -231)
+
+[node name="Marker2D3" type="Marker2D" parent="FunctionBlocks"]
+position = Vector2(-104, -92)
+
+[node name="Marker2D4" type="Marker2D" parent="FunctionBlocks"]
+position = Vector2(42, -92)
+
+[node name="Player" parent="." instance=ExtResource("1_l78e0")]

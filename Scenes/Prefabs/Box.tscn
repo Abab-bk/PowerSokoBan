@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://ci5cgogvvi3fi" path="res://Assets/Textures/Token1.png" id="2_a70cp"]
 [ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_xh6xd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_327si"]
-size = Vector2(64, 64)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ta64y"]
+resource_local_to_scene = true
+size = Vector2(60, 60)
 
 [node name="Box" type="Node2D"]
 script = ExtResource("1_jt6ju")
@@ -21,4 +22,4 @@ script = ExtResource("3_xh6xd")
 Actor = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActorBody"]
-shape = SubResource("RectangleShape2D_327si")
+shape = SubResource("RectangleShape2D_ta64y")

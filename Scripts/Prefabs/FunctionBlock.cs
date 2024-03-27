@@ -18,7 +18,22 @@ public partial class FunctionBlock : Actor
     private Direction _functionBlockDirection = Direction.Up;
     
     private FunctionBlockInfo _functionBlockInfo;
+
+    public void SetFunctionBlockValue(int value)
+    {
+        _functionBlockValue = value;
+    }
     
+    public void SetFunctionBlockType(FunctionBlockType type)
+    {
+        _functionBlockType = type;
+    }
+    
+    public void SetFunctionBlockDirection(Direction direction)
+    {
+        _functionBlockDirection = direction;
+    }
+
     public override void _Ready()
     {
         if (ActorArea == null)

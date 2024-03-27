@@ -32,6 +32,12 @@ public partial class Actor : Godot.Node2D
     
     protected System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> FunctionBlockInfos;
 
+    public void RulePosition()
+    {
+        GlobalPosition = GlobalPosition.Snapped(Vector2.One * _moveDistance);
+        GlobalPosition += Vector2.One * _moveDistance / 2;
+    }
+
     public void AddFunctionBlock(FunctionBlockInfo functionBlockInfo, Direction direction)
     {
         FunctionBlockInfos[direction] = functionBlockInfo;
@@ -63,7 +69,7 @@ public partial class Actor : Godot.Node2D
         _rayCast2D.CollisionMask = 0;
         _rayCast2D.SetCollisionMaskValue(2, true);
         
-        GlobalPosition = GlobalPosition.Snapped(Vector2.One * _moveDistance);
+        RulePosition();
     }
 
     protected virtual void UpdateUi()

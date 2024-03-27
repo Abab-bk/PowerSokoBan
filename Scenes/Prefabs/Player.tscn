@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://huswsv6iufo6"]
+[gd_scene load_steps=8 format=3 uid="uid://huswsv6iufo6"]
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
 [ext_resource type="Texture2D" uid="uid://daqan8rbrsx2p" path="res://Assets/Textures/Player.png" id="2_ewdf3"]
@@ -12,8 +12,13 @@ region = Rect2(0, 256, 64, 64)
 atlas = ExtResource("2_ewdf3")
 region = Rect2(256, 256, 64, 64)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o1r88"]
+resource_local_to_scene = true
+size = Vector2(60, 60)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u7ccg"]
-size = Vector2(64, 64)
+resource_local_to_scene = true
+size = Vector2(60, 60)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_6s7uw")
@@ -65,7 +70,7 @@ script = ExtResource("3_jtrh1")
 Actor = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActorBody"]
-shape = SubResource("RectangleShape2D_u7ccg")
+shape = SubResource("RectangleShape2D_o1r88")
 debug_color = Color(0.988235, 0, 0.301961, 0.419608)
 
 [node name="Area2D" type="Area2D" parent="."]
