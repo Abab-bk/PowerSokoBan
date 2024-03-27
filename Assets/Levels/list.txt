@@ -1,0 +1,21 @@
+intro1b:Gathering
+intro2b:Twice
+intro_navigation:Cavern
+intro2:Parity
+intro2a:Lagoon
+pancake:Shoulderblade
+push_intro0:Gearshift
+push_intro1:Winding Road
+push_intro1a:Thrice
+push_intro2:Castle
+empty_intro1a:Empty
+empty_intro1:Two Square
+empty_jumper:Four Square
+empty_setup:Scorpion
+empty_maze:Three's Company
+swap_intro:Swapper
+swap_pushintro:Magic Touch
+swap_push:Tacklebox
+swap_pushjump:J-Bend
+swap_jump2:Full Stack
+end:The End
