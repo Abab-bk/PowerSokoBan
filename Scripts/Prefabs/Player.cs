@@ -20,7 +20,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             base._Ready();
 
-            EnterNextLevelEvent += EnterNextLevel;
+            Master.EnterNextLevelEvent += EnterNextLevel;
             
             _directionSprites = new Godot.Collections.Dictionary<Direction, Sprite2D>()
             {
@@ -89,6 +89,10 @@ namespace PowerSokoBan.Scripts.Prefabs
 
         public void EnterNextLevel()
         {
+            if (Master.CanEnterNextLevel == false)
+            {
+                return;
+            }
             GD.Print("进入下一层");
             GlobalPosition = Vector2.Zero;
         }

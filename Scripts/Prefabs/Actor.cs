@@ -11,10 +11,7 @@ using Godot;
 [GlobalClass]
 public partial class Actor : Godot.Node2D
 {
-    protected delegate void EnterNextLevelEventHandler();
-    
     protected readonly Master Master = Master.GetInstance();
-    protected EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
     private int _moveDistance = 64;
     private bool _moving = false;
     

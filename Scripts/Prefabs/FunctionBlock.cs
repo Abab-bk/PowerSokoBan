@@ -13,6 +13,7 @@ public partial class FunctionBlock : Actor
 {
     [Export] private Area2D ActorArea { get; set; }
 
+    public LevelInfo LevelInfo;
     private int _functionBlockValue = 2;
     private FunctionBlockType _functionBlockType = FunctionBlockType.Red;
     private Direction _functionBlockDirection = Direction.Up;
@@ -58,6 +59,7 @@ public partial class FunctionBlock : Actor
         
         _functionBlockInfo.SetDirection(Master.PlayerLastDirection);
         player.AddFunctionBlock(_functionBlockInfo, Master.PlayerLastDirection);
+        LevelInfo.AddGotFunctionBlockCount(1);
         QueueFree();
     }
 }

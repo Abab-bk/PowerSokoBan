@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using PowerSokoBan.Scripts.Classes.Factorys;
 using PowerSokoBan.Scripts.Prefabs;
 
@@ -25,6 +26,8 @@ public partial class LevelGenerator : Node2D
         
         var text = file.GetAsText();
         file.Close();
+        
+        LevelInfo levelInfo = new LevelInfo();
         
         var lines = text.Split('\n');
         var width = lines[0].Length;
@@ -82,6 +85,8 @@ public partial class LevelGenerator : Node2D
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.FunctionBlock)
                     {
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
+                        functionBlock.LevelInfo = levelInfo;
+                        levelInfo.AddTotalFunctionBlockCount(1);
                         AddChild(functionBlock);
                         functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
                         functionBlock.RulePosition();
@@ -115,6 +120,8 @@ public partial class LevelGenerator : Node2D
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Swap)
                     {
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
+                        functionBlock.LevelInfo = levelInfo;
+                        levelInfo.AddTotalFunctionBlockCount(1);
                         AddChild(functionBlock);
                         functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
                         functionBlock.RulePosition();
@@ -126,6 +133,50 @@ public partial class LevelGenerator : Node2D
                 }
             }
         }
+    }
+}
+
+public class LevelInfo
+{
+    private int _gotFunctionBlockCount = 0;
+    private int _totalFunctionBlockCount = 0;
+    
+    public int GetGotFunctionBlockCount()
+    {
+        return _gotFunctionBlockCount;
+    }
+    
+    public int GetTotalFunctionBlockCount()
+    {
+        return _totalFunctionBlockCount;
+    }
+    
+    public void SetGotFunctionBlockCount(int value)
+    {
+        _gotFunctionBlockCount = value;
+        if (_gotFunctionBlockCount == _totalFunctionBlockCount)
+        {
+            Master.GetInstance().CanEnterNextLevel = true;
+        }
+    }
+    
+    public void AddGotFunctionBlockCount(int value)
+    {
+        _gotFunctionBlockCount += value;
+        if (_gotFunctionBlockCount == _totalFunctionBlockCount)
+        {
+            Master.GetInstance().CanEnterNextLevel = true;
+        }
+    }
+
+    public void SetTotalFunctionBlockCount(int value)
+    {
+        _totalFunctionBlockCount = value;
+    }
+
+    public void AddTotalFunctionBlockCount(int value)
+    {
+        _totalFunctionBlockCount += value;
     }
 }
 

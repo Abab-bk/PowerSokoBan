@@ -8,6 +8,10 @@ public class Master
     private static Master _instance;
     public Actor.Direction PlayerLastDirection { get; set; }
     
+    public delegate void EnterNextLevelEventHandler();
+    public EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
+    public bool CanEnterNextLevel;
+    
     private Master()
     {
     }
