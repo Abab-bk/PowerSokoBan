@@ -6,7 +6,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r0vpc"]
 resource_local_to_scene = true
-size = Vector2(60, 60)
 
 [node name="FunctionBlock" type="Node2D" node_paths=PackedStringArray("ActorArea")]
 script = ExtResource("1_co700")

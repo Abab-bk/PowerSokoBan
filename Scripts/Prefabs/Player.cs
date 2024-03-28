@@ -19,8 +19,6 @@ namespace PowerSokoBan.Scripts.Prefabs
         public override void _Ready()
         {
             base._Ready();
-
-            Master.EnterNextLevelEvent += EnterNextLevel;
             
             _directionSprites = new Godot.Collections.Dictionary<Direction, Sprite2D>()
             {
@@ -41,32 +39,38 @@ namespace PowerSokoBan.Scripts.Prefabs
             base._PhysicsProcess(delta);
             if (Input.IsActionJustPressed("ui_left"))
             {
+                if (IsMoving()) return;
                 _leftMoveCommand.Execute(this);
                 RegisterCommand(_leftMoveCommand);
             }
             if (Input.IsActionJustPressed("ui_right"))
             {
+                if (IsMoving()) return;
                 _rightMoveCommand.Execute(this);
                 RegisterCommand(_rightMoveCommand);
             }
             if (Input.IsActionJustPressed("ui_up"))
             {
+                if (IsMoving()) return;
                 _upMoveCommand.Execute(this);
                 RegisterCommand(_upMoveCommand);
             }
             if (Input.IsActionJustPressed("ui_down"))
             {
+                if (IsMoving()) return;
                 _downMoveCommand.Execute(this);
                 RegisterCommand(_downMoveCommand);
             }
 
             if (Input.IsActionJustPressed("Z"))
             {
+                if (IsMoving()) return;
                 Master.UndoCommandEvent();
             }
 
             if (Input.IsActionJustPressed("X"))
             {
+                if (IsMoving()) return;
                 Master.RedoCommandEvent();
             }
         }
@@ -91,12 +95,6 @@ namespace PowerSokoBan.Scripts.Prefabs
                 String typePath = FunctionBlockTypeToString(functionBlockInfo.FunctionBlockType);
                 _directionSprites[functionBlockInfo.Direction].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/{typePath}.tres") as Texture2D;
             }
-        }
-
-        public void EnterNextLevel()
-        {
-            GD.Print("进入下一层");
-            GlobalPosition = Vector2.Zero;
         }
     }
 

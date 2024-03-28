@@ -13,12 +13,22 @@ public partial class LevelGenerator : Node2D
     private TileMap _tileMap;
 
     const int GirdSize = 64;
-    
-    public LevelInfo GenerateLevel(string fileName)
+
+    public LevelInfo ResetGenerateLevel(string fileName)
+    {
+        foreach (var child in GetChildren())
+        {
+            child.QueueFree();
+        }
+        
+        return GenerateLevel(fileName);
+    }
+
+    private LevelInfo GenerateLevel(string fileName)
     {
         _tileMap.Clear();   
 
-        var file = FileAccess.Open("res://Assets/Levels/" + fileName, FileAccess.ModeFlags.Read);
+        var file = FileAccess.Open("res://Assets/Levels/" + fileName + ".txt", FileAccess.ModeFlags.Read);
         if (file == null)
         {
             return null;
@@ -37,6 +47,7 @@ public partial class LevelGenerator : Node2D
         {
             for (int y = 0; y < width; y++)
             {
+                if (lines.Length <= y) continue;
                 if (x < lines[y].Length)
                 {
                     var letter = lines[y][x];
@@ -59,7 +70,7 @@ public partial class LevelGenerator : Node2D
                         case '1': case '2': case '3':
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
-                                .SetValue(1 + int.Parse(letter.ToString()));
+                                .SetValue(int.Parse(letter.ToString()));
                             break;
                         case 'S':
                             obj = new MapBlockInfo()

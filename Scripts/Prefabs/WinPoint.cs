@@ -26,10 +26,6 @@ public partial class WinPoint : Actor
         {
             return;
         }
-        
-        GD.Print("进入了 WinPoint");
-        Player player = (Player) area.Owner;
-        // EnterNextLevelEvent();
-        player.EnterNextLevel();
+        Master.GetInstance().EnterNextLevelEvent();
     }
 }

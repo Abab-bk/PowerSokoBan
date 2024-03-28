@@ -5,7 +5,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sqjsc"]
 resource_local_to_scene = true
-size = Vector2(64, 64)
 
 [node name="WinPoint" type="Node2D" node_paths=PackedStringArray("_area2D")]
 script = ExtResource("1_wx1rm")

@@ -14,6 +14,7 @@ public partial class Actor : Node2D
 
     private int _moveDistance = 64;
     private bool _moving;
+    public bool BlockHidden;
     
     private CommandPool _commandPool;
     private RayCast2D _rayCast2D;
@@ -56,6 +57,11 @@ public partial class Actor : Node2D
         return _moveDistance;
     }
     
+    public bool IsMoving()
+    {
+        return _moving;
+    }
+    
     public enum Direction
     {
         Up,
@@ -93,11 +99,15 @@ public partial class Actor : Node2D
         {
             Vector2 originalPos = GlobalPosition;
             Tween shockTween = CreateTween();
+            _moving = true;
             
             shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.05f);
             shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
             shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
             shockTween.TweenProperty(this, "global_position", originalPos, 0.05f);
+
+            await ToSignal(shockTween, "finished");
+            _moving = false;
             return;
         }
         
@@ -110,7 +120,6 @@ public partial class Actor : Node2D
         tween.TweenProperty(this, "global_position", newPos, 0.2f);
         await ToSignal(tween, "finished");
         _moving = false;
-        
     }
     
     private bool AllowMoveTo(Direction dir)
@@ -124,6 +133,12 @@ public partial class Actor : Node2D
             if (collider is ActorBody)
             {
                 ActorBody actorBody = (ActorBody) collider;
+
+                if (actorBody.Actor.BlockHidden)
+                {
+                    return true;
+                }
+
                 if (actorBody.Actor is Box)
                 {
                     Box boxCollider = (Box)actorBody.Actor;

@@ -22,6 +22,16 @@ public partial class FunctionBlock : Actor
     private FunctionBlockInfo _functionBlockInfo;
 
     private EatenCommand _eatenCommand;
+
+    public void Disabled()
+    {
+        ActorArea.GetChild(0).SetDeferred("disabled", true);
+    }
+
+    public void Enabled()
+    {
+        ActorArea.GetChild(0).SetDeferred("disabled", false);
+    }
     
     public void SetFunctionBlockValue(int value)
     {
@@ -63,6 +73,11 @@ public partial class FunctionBlock : Actor
         
         Player player = (Player) area.Owner;
         
+        // if (player.IsMoving())
+        // {
+        //     return;
+        // }
+
         // Eaten Command
         _eatenCommand.Player = player;
         _eatenCommand.FunctionBlockInfo = _functionBlockInfo;
@@ -86,7 +101,13 @@ public class EatenCommand : ICommand
         Player.AddFunctionBlock(FunctionBlockInfo, Direction);
         LevelInfo.AddGotFunctionBlockCount(1);
         actor.Hide();
+        actor.BlockHidden = true;
         actor.UpdateUi();
+
+        if (actor is FunctionBlock)
+        {
+            ((FunctionBlock) actor).Disabled();
+        }
     }
 
     public void Undo(Actor actor)
@@ -94,6 +115,12 @@ public class EatenCommand : ICommand
         FunctionBlockInfo.SetDirection(Direction);
         LevelInfo.SetGotFunctionBlockCount(LevelInfo.GetGotFunctionBlockCount() - 1);
         actor.Show();
+        actor.BlockHidden = false;
         actor.UpdateUi();
+        
+        if (actor is FunctionBlock)
+        {
+            ((FunctionBlock) actor).Enabled();
+        }
     }
 }
