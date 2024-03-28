@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://c23k0frd5d24m"]
+[gd_scene load_steps=10 format=3 uid="uid://c23k0frd5d24m"]
 
 [ext_resource type="Texture2D" uid="uid://dxssthc04jubt" path="res://Assets/Textures/BkgGreen.png" id="1_3dxu4"]
 [ext_resource type="Script" path="res://Scripts/World.cs" id="1_eef1p"]
 [ext_resource type="Texture2D" uid="uid://c8gj80j0w12rd" path="res://Assets/Textures/WallTileset.png" id="1_soy35"]
 [ext_resource type="Texture2D" uid="uid://nny21qnauyf8" path="res://Assets/Textures/Map.png" id="2_r87hk"]
+[ext_resource type="PackedScene" uid="uid://brf028sugc1yw" path="res://Scenes/Ui.tscn" id="3_gseis"]
 [ext_resource type="Script" path="res://Scripts/Classes/LevelGenerator.cs" id="5_r4vvb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yu7uk"]
@@ -111,9 +112,10 @@ terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/2 = SubResource("TileSetAtlasSource_bwnut")
 sources/0 = SubResource("TileSetAtlasSource_yu7uk")
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("_levelGenerator")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("_levelGenerator", "_ui")]
 script = ExtResource("1_eef1p")
 _levelGenerator = NodePath("LevelGenerator")
+_ui = NodePath("CanvasLayer/UI")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -135,6 +137,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_3dxu4")
 stretch_mode = 1
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("3_gseis")]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_c1qj2")

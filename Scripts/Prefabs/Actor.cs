@@ -1,5 +1,4 @@
-﻿using System;
-using Godot.Collections;
+﻿using Godot.Collections;
 using PowerSokoBan.Scripts.Classes;
 using PowerSokoBan.Scripts.Enums;
 using PowerSokoBan.Scripts.Prefabs.Components;
@@ -9,11 +8,12 @@ namespace PowerSokoBan.Scripts.Prefabs;
 using Godot;
 
 [GlobalClass]
-public partial class Actor : Godot.Node2D
+public partial class Actor : Node2D
 {
     protected readonly Master Master = Master.GetInstance();
+
     private int _moveDistance = 64;
-    private bool _moving = false;
+    private bool _moving;
     
     private CommandPool _commandPool;
     private RayCast2D _rayCast2D;
@@ -25,9 +25,15 @@ public partial class Actor : Godot.Node2D
         {Direction.Left, Vector2.Left},
         {Direction.Right, Vector2.Right},
     };
+
+    private AddFunctionCommand _addFunctionCommand;
     
-    
-    protected System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> FunctionBlockInfos;
+    public System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> FunctionBlockInfos;
+
+    protected void SetCommandPool(Actor actor)
+    {
+        _commandPool = new CommandPool(actor);
+    }
 
     public void RulePosition()
     {
@@ -37,7 +43,10 @@ public partial class Actor : Godot.Node2D
 
     public void AddFunctionBlock(FunctionBlockInfo functionBlockInfo, Direction direction)
     {
-        FunctionBlockInfos[direction] = functionBlockInfo;
+        _addFunctionCommand.FunctionBlockInfo = functionBlockInfo;
+        _addFunctionCommand.Direction = direction;
+        _addFunctionCommand.Execute(this);
+        RegisterCommand(_addFunctionCommand);
         UpdateUi();
     }
     
@@ -57,6 +66,10 @@ public partial class Actor : Godot.Node2D
     
     public override void _Ready()
     {
+        Master.UndoCommandEvent += UndoEvent;
+        Master.RedoCommandEvent += Redo;
+        
+        _addFunctionCommand = new AddFunctionCommand();
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
         _commandPool = new CommandPool(this);
@@ -69,13 +82,25 @@ public partial class Actor : Godot.Node2D
         RulePosition();
     }
 
-    protected virtual void UpdateUi()
+    public virtual void UpdateUi()
     {
+        Master.UpdateUiEvent();
     }
 
     public virtual async void MoveTo(Direction dir)
     {
-        if (!AllowMoveTo(dir)) return;
+        if (!AllowMoveTo(dir))
+        {
+            Vector2 originalPos = GlobalPosition;
+            Tween shockTween = CreateTween();
+            
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.05f);
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
+            shockTween.TweenProperty(this, "global_position", originalPos, 0.05f);
+            return;
+        }
+        
         if (_moving) return;
         
         Vector2 newPos = GlobalPosition + _inputs[dir] * GetMoveDistance(dir);
@@ -99,14 +124,24 @@ public partial class Actor : Godot.Node2D
             if (collider is ActorBody)
             {
                 ActorBody actorBody = (ActorBody) collider;
-                if (actorBody.Actor is Box == false)
+                if (actorBody.Actor is Box)
                 {
-                    return false;
+                    Box boxCollider = (Box)actorBody.Actor;
+                    boxCollider.MoveTo(dir);
+                    return true;
                 }
 
-                Box boxCollider = (Box)actorBody.Actor;
-                boxCollider.MoveTo(dir);
-                return true;
+                if (actorBody.Actor is FunctionBlock)
+                {
+                    if (FunctionBlockInfos.ContainsKey(dir))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -118,17 +153,36 @@ public partial class Actor : Godot.Node2D
         _commandPool.Register(command);
     }
     
-    protected void Undo()
+    private void Undo()
     {
         _commandPool.Undo();
     }
     
-    protected void Redo()
+    private void Redo()
     {
         _commandPool.Redo();
     }
+
+    protected virtual void UndoEvent()
+    {
+        Undo();
+    }
     
+    protected virtual void RedoEvent()
+    {
+        Redo();
+    }
+
+    public void RedoPublic()
+    {
+        Redo();
+    }
     
+    public void UndoPublic()
+    {
+        Undo();
+    }
+
     protected string DirectionToString(Direction dir)
     {
         switch (dir)
@@ -161,5 +215,24 @@ public partial class Actor : Godot.Node2D
         }
         
         return "Red";
+    }
+}
+
+public class AddFunctionCommand : ICommand
+{
+    public FunctionBlockInfo FunctionBlockInfo;
+    public Actor.Direction Direction;
+    
+    public void Execute(Actor actor)
+    {
+        actor.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+        actor.UpdateUi();
+    }
+
+    public void Undo(Actor actor)
+    {
+        actor.FunctionBlockInfos.Remove(Direction);
+        actor.UpdateUi();
+        actor.UndoPublic();
     }
 }

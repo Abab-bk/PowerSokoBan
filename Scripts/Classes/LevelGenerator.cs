@@ -14,14 +14,14 @@ public partial class LevelGenerator : Node2D
 
     const int GirdSize = 64;
     
-    public void GenerateLevel(string fileName)
+    public LevelInfo GenerateLevel(string fileName)
     {
         _tileMap.Clear();   
 
         var file = FileAccess.Open("res://Assets/Levels/" + fileName, FileAccess.ModeFlags.Read);
         if (file == null)
         {
-            return;
+            return null;
         }
         
         var text = file.GetAsText();
@@ -59,7 +59,7 @@ public partial class LevelGenerator : Node2D
                         case '1': case '2': case '3':
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
-                                .SetValue(int.Parse(letter.ToString()));
+                                .SetValue(1 + int.Parse(letter.ToString()));
                             break;
                         case 'S':
                             obj = new MapBlockInfo()
@@ -133,6 +133,8 @@ public partial class LevelGenerator : Node2D
                 }
             }
         }
+
+        return levelInfo;
     }
 }
 

@@ -22,6 +22,11 @@ public partial class WinPoint : Actor
             return;
         }
         
+        if (Master.CanEnterNextLevel == false)
+        {
+            return;
+        }
+        
         GD.Print("进入了 WinPoint");
         Player player = (Player) area.Owner;
         // EnterNextLevelEvent();

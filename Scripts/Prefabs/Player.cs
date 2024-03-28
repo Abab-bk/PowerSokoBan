@@ -15,7 +15,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         private RightMoveCommand _rightMoveCommand;
         private UpMoveCommand _upMoveCommand;
         private DownMoveCommand _downMoveCommand;
-
+        
         public override void _Ready()
         {
             base._Ready();
@@ -62,12 +62,12 @@ namespace PowerSokoBan.Scripts.Prefabs
 
             if (Input.IsActionJustPressed("Z"))
             {
-                Undo();
+                Master.UndoCommandEvent();
             }
 
             if (Input.IsActionJustPressed("X"))
             {
-                Redo();
+                Master.RedoCommandEvent();
             }
         }
 
@@ -77,8 +77,14 @@ namespace PowerSokoBan.Scripts.Prefabs
             Master.PlayerLastDirection = dir;
         }
 
-        protected override void UpdateUi()
+        public override void UpdateUi()
         {
+            foreach (KeyValuePair<Direction, Sprite2D> kvp in _directionSprites)
+            {
+                String directionPath = DirectionToString(kvp.Key);
+                _directionSprites[kvp.Key].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/White.tres") as Texture2D;
+            }
+            
             foreach (FunctionBlockInfo functionBlockInfo in FunctionBlockInfos.Values)
             {
                 String directionPath = DirectionToString(functionBlockInfo.Direction);
@@ -89,10 +95,6 @@ namespace PowerSokoBan.Scripts.Prefabs
 
         public void EnterNextLevel()
         {
-            if (Master.CanEnterNextLevel == false)
-            {
-                return;
-            }
             GD.Print("进入下一层");
             GlobalPosition = Vector2.Zero;
         }
