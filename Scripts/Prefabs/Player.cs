@@ -73,6 +73,11 @@ namespace PowerSokoBan.Scripts.Prefabs
                 if (IsMoving()) return;
                 Master.RedoCommandEvent();
             }
+
+            if (Input.IsActionJustPressed("R"))
+            {
+                Master.ResetCurrentLevelEvent();
+            }
         }
 
         public override void MoveTo(Direction dir)

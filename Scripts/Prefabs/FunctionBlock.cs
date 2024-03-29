@@ -12,6 +12,7 @@ namespace PowerSokoBan.Scripts.Prefabs;
 public partial class FunctionBlock : Actor
 {
     [Export] private Area2D ActorArea { get; set; }
+    [Export] private Sprite2D _sprite2D;
 
     public LevelInfo LevelInfo;
     
@@ -61,6 +62,19 @@ public partial class FunctionBlock : Actor
         
         ActorArea.AreaEntered += _actorArea_AreaEntered;
         _functionBlockInfo = new FunctionBlockInfo(_functionBlockValue, _functionBlockType, _functionBlockDirection);
+        
+        switch (_functionBlockValue)
+        {
+            case 1:
+                _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/White1.tres");
+                break;
+            case 2:
+                _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Red2.tres");
+                break;
+            case 3:
+                _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Blue3.tres");
+                break;
+        }
     }
 
     private void _actorArea_AreaEntered(Area2D area)

@@ -61,8 +61,6 @@ position = Vector2(0, -12)
 texture = ExtResource("6_kk1ls")
 region_rect = Rect2(73, 0, 46, 34)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-
 [node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]
 collision_layer = 8
 collision_mask = 2
@@ -80,3 +78,5 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_u7ccg")
 debug_color = Color(0.988235, 0, 0.301961, 0.419608)
+
+[node name="Camera2D" type="Camera2D" parent="."]

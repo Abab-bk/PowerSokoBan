@@ -8,7 +8,6 @@ public partial class WinPoint : Actor
 {
     [Export]
     private Area2D _area2D;
-    private bool _isEntered = false;
     
     public override void _Ready()
     {
@@ -18,8 +17,6 @@ public partial class WinPoint : Actor
 
     private void _area2D_AreaEntered(Area2D area)
     {
-        if (_isEntered) return;
-        
         if (area.Owner is Player == false)
         {
             return;
@@ -30,7 +27,6 @@ public partial class WinPoint : Actor
             return;
         }
 
-        _isEntered = true;
         Master.GetInstance().EnterNextLevelEvent();
     }
 }

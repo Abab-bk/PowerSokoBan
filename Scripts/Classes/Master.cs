@@ -12,11 +12,13 @@ public class Master
     public delegate void RedoCommandEventHandler();
     public delegate void UndoCommandEventHandler();
     public delegate void UpdateUiEventHandler();
+    public delegate void ResetCurrentLevelEventHandler();
     
     public RedoCommandEventHandler RedoCommandEvent = () => { };
     public UndoCommandEventHandler UndoCommandEvent = () => { };
     public EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
     public UpdateUiEventHandler UpdateUiEvent = () => { };
+    public ResetCurrentLevelEventHandler ResetCurrentLevelEvent = () => { };
     
     public bool CanEnterNextLevel;
     

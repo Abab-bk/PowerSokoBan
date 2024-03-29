@@ -19,8 +19,28 @@ public partial class World : Node2D
         EnterNextLevel();
         Master.GetInstance().UpdateUiEvent += UpdateUi;
         Master.GetInstance().EnterNextLevelEvent += EnterNextLevel;
+        Master.GetInstance().ResetCurrentLevelEvent += ResetCurrentLevel;
     }
 
+    private void ResetCurrentLevel()
+    {
+        foreach (var child in _levelGenerator.GetChildren())
+        {
+            child.CallDeferred("queue_free");
+        }
+        
+        LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
+        
+        if (levelInfo == null)
+        {
+            return;
+        }
+
+        Master.GetInstance().CanEnterNextLevel = false;
+        _ui.SetLevelInfo(levelInfo);
+        UpdateUi();
+    }
+    
     private void EnterNextLevel()
     {
         GD.Print("进入下一层");
@@ -37,7 +57,8 @@ public partial class World : Node2D
         {
             return;
         }
-        
+
+        Master.GetInstance().CanEnterNextLevel = false;
         _ui.SetLevelInfo(levelInfo);
         UpdateUi();
     }
