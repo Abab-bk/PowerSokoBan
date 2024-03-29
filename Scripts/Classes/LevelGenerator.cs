@@ -16,17 +16,12 @@ public partial class LevelGenerator : Node2D
 
     public LevelInfo ResetGenerateLevel(string fileName)
     {
-        foreach (var child in GetChildren())
-        {
-            child.QueueFree();
-        }
-        
         return GenerateLevel(fileName);
     }
 
     private LevelInfo GenerateLevel(string fileName)
     {
-        _tileMap.Clear();   
+        _tileMap.Clear();
 
         var file = FileAccess.Open("res://Assets/Levels/" + fileName + ".txt", FileAccess.ModeFlags.Read);
         if (file == null)
@@ -98,27 +93,31 @@ public partial class LevelGenerator : Node2D
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
                         functionBlock.LevelInfo = levelInfo;
                         levelInfo.AddTotalFunctionBlockCount(1);
-                        AddChild(functionBlock);
-                        functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
-                        functionBlock.RulePosition();
+                        CallDeferred("add_child", functionBlock);
+                        functionBlock.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
+                        functionBlock.CallDeferred("RulePosition");
                         continue;
                     }
 
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Player)
                     {
                         Player player = (Player)ActorFactory.CreateActor(ActorType.Player);
-                        AddChild(player);
-                        player.GlobalPosition = new Vector2(x, y) * GirdSize;
-                        player.RulePosition();
+                        
+                        CallDeferred("add_child", player);
+                        player.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
+                        player.CallDeferred("RulePosition");
+                        
                         continue;
                     }
 
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Goal)
                     {
                         WinPoint winPoint = (WinPoint)ActorFactory.CreateActor(ActorType.WinPoint);
-                        AddChild(winPoint);
-                        winPoint.GlobalPosition = new Vector2(x, y) * GirdSize;
-                        winPoint.RulePosition();
+                        
+                        CallDeferred("add_child", winPoint);
+                        winPoint.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
+                        winPoint.CallDeferred("RulePosition");
+                        
                         continue;
                     }
 

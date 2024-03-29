@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using PowerSokoBan.Scripts.Classes;
 namespace PowerSokoBan.Scripts;
@@ -25,6 +24,12 @@ public partial class World : Node2D
     private void EnterNextLevel()
     {
         GD.Print("进入下一层");
+        
+        foreach (var child in _levelGenerator.GetChildren())
+        {
+            child.CallDeferred("queue_free");
+        }
+        
         _currentLevelIndex += 1;
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
         
