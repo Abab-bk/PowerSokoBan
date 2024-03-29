@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c23k0frd5d24m"]
+[gd_scene load_steps=11 format=3 uid="uid://c23k0frd5d24m"]
 
 [ext_resource type="Texture2D" uid="uid://dxssthc04jubt" path="res://Assets/Textures/BkgGreen.png" id="1_3dxu4"]
 [ext_resource type="Script" path="res://Scripts/World.cs" id="1_eef1p"]
@@ -104,13 +104,15 @@ texture_region_size = Vector2i(50, 50)
 
 [sub_resource type="TileSet" id="TileSet_c1qj2"]
 tile_size = Vector2i(64, 64)
-physics_layer_0/collision_layer = 2
+physics_layer_0/collision_layer = 18
 physics_layer_0/collision_mask = 0
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Wall"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/2 = SubResource("TileSetAtlasSource_bwnut")
 sources/0 = SubResource("TileSetAtlasSource_yu7uk")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6rpm"]
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("_levelGenerator", "_ui")]
 script = ExtResource("1_eef1p")
@@ -149,3 +151,6 @@ layer_0/tile_data = PackedInt32Array(-262147, 0, 0, -262146, 0, 0, -262145, 0, 0
 [node name="LevelGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_tileMap")]
 script = ExtResource("5_r4vvb")
 _tileMap = NodePath("../TileMap")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a6rpm")
