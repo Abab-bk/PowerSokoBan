@@ -14,12 +14,10 @@ public partial class Actor : Node2D
 
     private int _moveDistance = 64;
     private bool _moving;
-    private int _canMoveDistance;
     public bool BlockHidden;
     
     private CommandPool _commandPool;
     private RayCast2D _rayCast2D;
-    private Area2D _rayCastArea2D;
 
     private Dictionary<Direction, Vector2> _inputs = new Dictionary<Direction, Vector2>()
     {
@@ -55,8 +53,6 @@ public partial class Actor : Node2D
     
     private int GetMoveDistance(Direction dir)
     {
-        if (_canMoveDistance == 1) return _moveDistance;
-
         if (FunctionBlockInfos.ContainsKey(dir)) return (_moveDistance * FunctionBlockInfos[dir].FunctionBlockValue);
         return _moveDistance;
     }
@@ -82,23 +78,15 @@ public partial class Actor : Node2D
         _addFunctionCommand = new AddFunctionCommand();
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
-        _rayCastArea2D = new Area2D();
         _commandPool = new CommandPool(this);
         
         AddChild(_rayCast2D);
-        _rayCast2D.AddChild(_rayCastArea2D);
         
         CollisionShape2D collisionShape2D = new CollisionShape2D();
         CircleShape2D circleShape2D = new CircleShape2D();
         
         circleShape2D.Radius = 1;
         collisionShape2D.Shape = circleShape2D;
-        
-        _rayCastArea2D.AddChild(collisionShape2D);
-        
-        _rayCastArea2D.CollisionMask = 0;
-        _rayCastArea2D.CollisionLayer = 0;
-        _rayCastArea2D.SetCollisionMaskValue(5, true);
         
         _rayCast2D.CollisionMask = 0;
         _rayCast2D.SetCollisionMaskValue(2, true);
@@ -142,51 +130,21 @@ public partial class Actor : Node2D
 
     private bool AllowMoveTo(Direction dir)
     {
-        _canMoveDistance = 0;
-        _rayCast2D.TargetPosition = _inputs[dir] * GetMoveDistance(dir);
-        _rayCastArea2D.GlobalPosition = _rayCast2D.TargetPosition;
+        _rayCast2D.TargetPosition =  _inputs[dir] * GetMoveDistance(dir);
         _rayCast2D.ForceRaycastUpdate();
-        
+
         if (!_rayCast2D.IsColliding()) return true;
-        if (_rayCastArea2D.HasOverlappingBodies())
-        {
-            Array<Node2D> nodes = _rayCastArea2D.GetOverlappingBodies();
-            if (nodes[0] is TileMap)
-            {
-                return true;
-            }
-        }
 
         var collider = _rayCast2D.GetCollider();
 
-        if (collider is ActorBody == false)
-        {
-            _rayCast2D.TargetPosition = _inputs[dir] * _moveDistance;
-            _rayCast2D.ForceRaycastUpdate();
-
-            if (!_rayCast2D.IsColliding())
-            {
-                _canMoveDistance = 1;
-                return true;
-            }
-
-            return false;
-        }
+        if (collider is ActorBody == false) return false;
 
         var actorBody = (ActorBody)collider;
-
+        
+        // FIXME: 如果吃了方块，方块会被隐藏，再冲的话会导致可以移动
         if (actorBody.Actor.BlockHidden)
         {
-            _rayCast2D.TargetPosition = _inputs[dir] * _moveDistance;
-            _rayCast2D.ForceRaycastUpdate();
-
-            if (!_rayCast2D.IsColliding() || actorBody.Actor.BlockHidden)
-            {
-                _canMoveDistance = 1;
-                return true;
-            }
-            
-            return false;
+            return true;
         }
 
         if (actorBody.Actor is Box)

@@ -47,7 +47,6 @@ R={
 2d_physics/layer_2="WallAndFunctionBlocks"
 2d_physics/layer_3="FunctionBlocks"
 2d_physics/layer_4="Player"
-2d_physics/layer_5="Wall"
 
 [rendering]
 

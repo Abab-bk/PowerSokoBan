@@ -13,6 +13,7 @@ public partial class FunctionBlock : Actor
 {
     [Export] private Area2D ActorArea { get; set; }
     [Export] private Sprite2D _sprite2D;
+    [Export] private CollisionShape2D _collisionShape2D;
 
     public LevelInfo LevelInfo;
     
@@ -26,12 +27,12 @@ public partial class FunctionBlock : Actor
 
     public void Disabled()
     {
-        ActorArea.GetChild(0).SetDeferred("disabled", true);
+        _collisionShape2D.SetDeferred("disabled", true);
     }
 
     public void Enabled()
     {
-        ActorArea.GetChild(0).SetDeferred("disabled", false);
+        _collisionShape2D.SetDeferred("disabled", false);
     }
     
     public void SetFunctionBlockValue(int value)
