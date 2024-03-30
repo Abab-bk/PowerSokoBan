@@ -28,7 +28,7 @@ public class CommandPool
         
         _mUndoDeque.AddLast(command);
     }
-
+    
     public void Undo()
     {
         if (_mUndoDeque.Count <= 0) return;

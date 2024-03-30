@@ -23,7 +23,7 @@ public partial class FunctionBlock : Actor
     
     private FunctionBlockInfo _functionBlockInfo;
 
-    private EatenCommand _eatenCommand;
+    private EatFunctionBlockCommand _eatenCommand;
 
     public void Disabled()
     {
@@ -59,7 +59,7 @@ public partial class FunctionBlock : Actor
         }
 
         SetCommandPool(this);
-        _eatenCommand = new EatenCommand();
+        _eatenCommand = new EatFunctionBlockCommand();
         
         ActorArea.AreaEntered += _actorArea_AreaEntered;
         _functionBlockInfo = new FunctionBlockInfo(_functionBlockValue, _functionBlockType, _functionBlockDirection);
@@ -86,56 +86,19 @@ public partial class FunctionBlock : Actor
             return;
         }
         
+        if (BlockHidden) return;
+        
         Player player = (Player) area.Owner;
         
-        // if (player.IsMoving())
-        // {
-        //     return;
-        // }
+        _functionBlockInfo.FunctionBlock = this;
 
-        // Eaten Command
         _eatenCommand.Player = player;
         _eatenCommand.FunctionBlockInfo = _functionBlockInfo;
         _eatenCommand.Direction = Master.PlayerLastDirection;
         _eatenCommand.LevelInfo = LevelInfo;
         _eatenCommand.Execute(this);
-        RegisterCommand(_eatenCommand);
-    }
-}
-
-
-public class EatenCommand : ICommand
-{
-    public Player Player;
-    public FunctionBlockInfo FunctionBlockInfo;
-    public Actor.Direction Direction;
-    public LevelInfo LevelInfo;
-    public void Execute(Actor actor)
-    {
-        FunctionBlockInfo.SetDirection(Direction);
-        Player.AddFunctionBlock(FunctionBlockInfo, Direction);
-        LevelInfo.AddGotFunctionBlockCount(1);
-        actor.Hide();
-        actor.BlockHidden = true;
-        actor.UpdateUi();
-
-        if (actor is FunctionBlock)
-        {
-            ((FunctionBlock) actor).Disabled();
-        }
-    }
-
-    public void Undo(Actor actor)
-    {
-        FunctionBlockInfo.SetDirection(Direction);
-        LevelInfo.SetGotFunctionBlockCount(LevelInfo.GetGotFunctionBlockCount() - 1);
-        actor.Show();
-        actor.BlockHidden = false;
-        actor.UpdateUi();
         
-        if (actor is FunctionBlock)
-        {
-            ((FunctionBlock) actor).Enabled();
-        }
+        // 仅仅是注册
+        player.EatFunctionBlock(_eatenCommand);
     }
 }

@@ -8,6 +8,7 @@ public struct FunctionBlockInfo
     public readonly int FunctionBlockValue;
     public readonly FunctionBlockType FunctionBlockType;
     public Actor.Direction Direction;
+    public FunctionBlock FunctionBlock;
     
     public FunctionBlockInfo(int functionBlockValue, FunctionBlockType functionBlockType, Actor.Direction direction)
     {

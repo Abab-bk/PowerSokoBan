@@ -27,8 +27,6 @@ public partial class Actor : Node2D
         {Direction.Left, Vector2.Left},
         {Direction.Right, Vector2.Right},
     };
-
-    private AddFunctionCommand _addFunctionCommand;
     
     public System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo> FunctionBlockInfos;
 
@@ -41,15 +39,6 @@ public partial class Actor : Node2D
     {
         GlobalPosition = GlobalPosition.Snapped(Vector2.One * _moveDistance);
         GlobalPosition += Vector2.One * _moveDistance / 2;
-    }
-
-    public void AddFunctionBlock(FunctionBlockInfo functionBlockInfo, Direction direction)
-    {
-        _addFunctionCommand.FunctionBlockInfo = functionBlockInfo;
-        _addFunctionCommand.Direction = direction;
-        _addFunctionCommand.Execute(this);
-        RegisterCommand(_addFunctionCommand);
-        UpdateUi();
     }
     
     private int GetMoveDistance(Direction dir)
@@ -76,7 +65,6 @@ public partial class Actor : Node2D
         Master.UndoCommandEvent += UndoEvent;
         Master.RedoCommandEvent += Redo;
         
-        _addFunctionCommand = new AddFunctionCommand();
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
         _winPointRayCast2D = new RayCast2D();
@@ -123,10 +111,11 @@ public partial class Actor : Node2D
             _moving = false;
             return;
         }
-        
+
         if (_moving) return;
         
         Vector2 newPos = GlobalPosition + _inputs[dir] * GetMoveDistance(dir);
+        
         Tween tween = CreateTween();
         
         _moving = true;
@@ -242,24 +231,5 @@ public partial class Actor : Node2D
         }
         
         return "Red";
-    }
-}
-
-public class AddFunctionCommand : ICommand
-{
-    public FunctionBlockInfo FunctionBlockInfo;
-    public Actor.Direction Direction;
-    
-    public void Execute(Actor actor)
-    {
-        actor.FunctionBlockInfos[Direction] = FunctionBlockInfo;
-        actor.UpdateUi();
-    }
-
-    public void Undo(Actor actor)
-    {
-        actor.FunctionBlockInfos.Remove(Direction);
-        actor.UpdateUi();
-        actor.UndoPublic();
     }
 }

@@ -1,9 +1,6 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using PowerSokoBan.Scripts.Classes;
-using PowerSokoBan.Scripts.Enums;
-using PowerSokoBan.Scripts.Prefabs;
 
 namespace PowerSokoBan.Scripts.Prefabs
 {
@@ -66,12 +63,14 @@ namespace PowerSokoBan.Scripts.Prefabs
             {
                 if (IsMoving()) return;
                 Master.UndoCommandEvent();
+                UpdateUi();
             }
 
             if (Input.IsActionJustPressed("X"))
             {
                 if (IsMoving()) return;
                 Master.RedoCommandEvent();
+                UpdateUi();
             }
 
             if (Input.IsActionJustPressed("R"))
@@ -90,16 +89,21 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             foreach (KeyValuePair<Direction, Sprite2D> kvp in _directionSprites)
             {
-                String directionPath = DirectionToString(kvp.Key);
+                string directionPath = DirectionToString(kvp.Key);
                 _directionSprites[kvp.Key].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/White.tres") as Texture2D;
             }
             
             foreach (FunctionBlockInfo functionBlockInfo in FunctionBlockInfos.Values)
             {
-                String directionPath = DirectionToString(functionBlockInfo.Direction);
-                String typePath = FunctionBlockTypeToString(functionBlockInfo.FunctionBlockType);
+                string directionPath = DirectionToString(functionBlockInfo.Direction);
+                string typePath = FunctionBlockTypeToString(functionBlockInfo.FunctionBlockType);
                 _directionSprites[functionBlockInfo.Direction].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/{typePath}.tres") as Texture2D;
             }
+        }
+
+        public void EatFunctionBlock(EatFunctionBlockCommand eatFunctionBlockCommand)
+        {
+            RegisterCommand(eatFunctionBlockCommand);
         }
     }
 
@@ -153,6 +157,52 @@ namespace PowerSokoBan.Scripts.Prefabs
         public void Undo(Actor actor)
         {
             actor.MoveTo(Actor.Direction.Up);
+        }
+    }
+
+    public class EatFunctionBlockCommand : ICommand
+    {
+        public Player Player;
+        public FunctionBlockInfo FunctionBlockInfo;
+        public Actor.Direction Direction;
+        public LevelInfo LevelInfo;
+        
+        // actor 是 FunctionBlock
+        public void Execute(Actor actor)
+        {
+            FunctionBlockInfo.SetDirection(Direction);
+            
+            Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+            
+            LevelInfo.AddGotFunctionBlockCount(1);
+
+            if (FunctionBlockInfo.FunctionBlock != null)
+            {
+                actor.Hide();
+                actor.BlockHidden = true;
+                actor.UpdateUi();
+                ((FunctionBlock) actor).Disabled();
+            }
+            
+            Player.UpdateUi();
+        }
+
+        // 但这里的 actor 是 player
+        public void Undo(Actor actor)
+        {
+            FunctionBlockInfo.SetDirection(Direction);
+            LevelInfo.SetGotFunctionBlockCount(LevelInfo.GetGotFunctionBlockCount() - 1);
+            
+            actor.FunctionBlockInfos.Remove(Direction);
+            actor.UndoPublic();
+        
+            if (FunctionBlockInfo.FunctionBlock != null)
+            {
+                FunctionBlockInfo.FunctionBlock.Show();
+                FunctionBlockInfo.FunctionBlock.BlockHidden = false;
+                FunctionBlockInfo.FunctionBlock.UpdateUi();
+                FunctionBlockInfo.FunctionBlock.Enabled();
+            }
         }
     }
 }
