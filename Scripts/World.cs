@@ -9,6 +9,8 @@ public partial class World : Node2D
     [Export] private LevelGenerator _levelGenerator;
     [Export] private Ui _ui;
 
+    private const string SavePath = "user://save.dat";
+    
     private readonly List<LevelDisplayInfo> _allLevels = new List<LevelDisplayInfo>();
 
     private int _currentLevelIndex = -1;
@@ -16,7 +18,11 @@ public partial class World : Node2D
     
     public override void _Ready()
     {
-        EnterNextLevel();
+        if (!LoadGame())
+        {
+            EnterNextLevel();
+        }
+        
         Master.GetInstance().UpdateUiEvent += UpdateUi;
         Master.GetInstance().EnterNextLevelEvent += EnterNextLevel;
         Master.GetInstance().ResetCurrentLevelEvent += ResetCurrentLevel;
@@ -51,6 +57,7 @@ public partial class World : Node2D
         }
         
         _currentLevelIndex += 1;
+        SaveGame();
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
         
         if (levelInfo == null)
@@ -96,6 +103,25 @@ public partial class World : Node2D
     private void UpdateUi()
     {
         _ui.UpdateUi();
+    }
+
+    private void SaveGame()
+    {
+        ConfigFile config = new ConfigFile();
+        config.SetValue("Game", "CurrentLevelIndex", _currentLevelIndex);
+        config.Save(SavePath);
+    }
+
+    private bool LoadGame()
+    {
+        ConfigFile config = new ConfigFile();
+        Error error = config.Load(SavePath);
+
+        if (error != Error.Ok) return false;
+        
+        _currentLevelIndex = (int)config.GetValue("Game", "CurrentLevelIndex", -1);
+        ResetCurrentLevel();
+        return true;
     }
 }
 

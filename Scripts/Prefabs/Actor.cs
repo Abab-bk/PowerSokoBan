@@ -18,6 +18,7 @@ public partial class Actor : Node2D
     
     private CommandPool _commandPool;
     private RayCast2D _rayCast2D;
+    private RayCast2D _winPointRayCast2D;
 
     private Dictionary<Direction, Vector2> _inputs = new Dictionary<Direction, Vector2>()
     {
@@ -78,9 +79,11 @@ public partial class Actor : Node2D
         _addFunctionCommand = new AddFunctionCommand();
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
+        _winPointRayCast2D = new RayCast2D();
         _commandPool = new CommandPool(this);
         
         AddChild(_rayCast2D);
+        AddChild(_winPointRayCast2D);
         
         CollisionShape2D collisionShape2D = new CollisionShape2D();
         CircleShape2D circleShape2D = new CircleShape2D();
@@ -90,6 +93,10 @@ public partial class Actor : Node2D
         
         _rayCast2D.CollisionMask = 0;
         _rayCast2D.SetCollisionMaskValue(2, true);
+        
+        _winPointRayCast2D.CollisionMask = 0;
+        _winPointRayCast2D.SetCollisionMaskValue(5, true);
+        _winPointRayCast2D.CollideWithAreas = true;
         
         RulePosition();
     }
@@ -132,16 +139,20 @@ public partial class Actor : Node2D
     {
         _rayCast2D.TargetPosition =  _inputs[dir] * GetMoveDistance(dir);
         _rayCast2D.ForceRaycastUpdate();
+        _winPointRayCast2D.TargetPosition = _rayCast2D.TargetPosition;
+        _winPointRayCast2D.ForceRaycastUpdate();
 
+        if (_winPointRayCast2D.IsColliding()) return true;
+        
         if (!_rayCast2D.IsColliding()) return true;
 
         var collider = _rayCast2D.GetCollider();
 
+        // FIXME: 如果目标位置是终点，但是隔着墙，就会导致冲不到终点
         if (collider is ActorBody == false) return false;
 
         var actorBody = (ActorBody)collider;
         
-        // FIXME: 如果吃了方块，方块会被隐藏，再冲的话会导致可以移动
         if (actorBody.Actor.BlockHidden)
         {
             return true;
