@@ -35,8 +35,7 @@ public class CommandPool
         
         ICommand command = _mUndoDeque.Last.Value;
         _mUndoDeque.RemoveLast();
-        command.Undo(_actor);
-        
+        // Command.Undo() -> 这里使用 MapState 压栈，所以不需要这个了
         _mRedoStack.Push(command);
     }
 

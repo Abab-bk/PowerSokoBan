@@ -9,17 +9,17 @@ public class Master
     public Actor.Direction PlayerLastDirection { get; set; }
     
     public delegate void EnterNextLevelEventHandler();
-    public delegate void RedoCommandEventHandler();
-    public delegate void UndoCommandEventHandler();
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();
+    public delegate void SaveMapEventHandler(Vector2 playerPos);
+    public delegate void LoadMapEventHandler(Player player);
     
-    public RedoCommandEventHandler RedoCommandEvent = () => { };
-    public UndoCommandEventHandler UndoCommandEvent = () => { };
     public EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
     public UpdateUiEventHandler UpdateUiEvent = () => { };
     public ResetCurrentLevelEventHandler ResetCurrentLevelEvent = () => { };
-    
+    public SaveMapEventHandler SaveMapEvent;
+    public LoadMapEventHandler LoadMapEvent;
+
     public bool CanEnterNextLevel;
     
     private Master()

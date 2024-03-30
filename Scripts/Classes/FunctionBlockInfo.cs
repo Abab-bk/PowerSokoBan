@@ -3,7 +3,7 @@ using PowerSokoBan.Scripts.Prefabs;
 
 namespace PowerSokoBan.Scripts.Classes;
 
-public struct FunctionBlockInfo
+public class FunctionBlockInfo
 {
     public readonly int FunctionBlockValue;
     public readonly FunctionBlockType FunctionBlockType;

@@ -47,7 +47,7 @@ public partial class Actor : Node2D
         return _moveDistance;
     }
     
-    public bool IsMoving()
+    protected bool IsMoving()
     {
         return _moving;
     }
@@ -62,9 +62,6 @@ public partial class Actor : Node2D
     
     public override void _Ready()
     {
-        Master.UndoCommandEvent += UndoEvent;
-        Master.RedoCommandEvent += Redo;
-        
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
         _rayCast2D = new RayCast2D();
         _winPointRayCast2D = new RayCast2D();
@@ -162,41 +159,6 @@ public partial class Actor : Node2D
         }
         
         return false;
-    }
-
-    protected void RegisterCommand(ICommand command)
-    {
-        _commandPool.Register(command);
-    }
-    
-    private void Undo()
-    {
-        _commandPool.Undo();
-    }
-    
-    private void Redo()
-    {
-        _commandPool.Redo();
-    }
-
-    protected virtual void UndoEvent()
-    {
-        Undo();
-    }
-    
-    protected virtual void RedoEvent()
-    {
-        Redo();
-    }
-
-    public void RedoPublic()
-    {
-        Redo();
-    }
-    
-    public void UndoPublic()
-    {
-        Undo();
     }
 
     protected string DirectionToString(Direction dir)

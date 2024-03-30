@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using PowerSokoBan.Scripts.Classes;
+using PowerSokoBan.Scripts.Prefabs;
+
 namespace PowerSokoBan.Scripts;
 
 public partial class World : Node2D
@@ -15,6 +17,8 @@ public partial class World : Node2D
 
     private int _currentLevelIndex = -1;
     private string _levelContent;
+
+    private Stack<MapState> _mapHistory = new Stack<MapState>();
     
     public override void _Ready()
     {
@@ -26,6 +30,8 @@ public partial class World : Node2D
         Master.GetInstance().UpdateUiEvent += UpdateUi;
         Master.GetInstance().EnterNextLevelEvent += EnterNextLevel;
         Master.GetInstance().ResetCurrentLevelEvent += ResetCurrentLevel;
+        Master.GetInstance().SaveMapEvent = SaveMap;
+        Master.GetInstance().LoadMapEvent = LoadMap;
     }
 
     private void ResetCurrentLevel()
@@ -123,6 +129,61 @@ public partial class World : Node2D
         ResetCurrentLevel();
         return true;
     }
+
+    private void SaveMap(Vector2 playerPos)
+    {
+        MapState mapState = new MapState();
+
+        mapState.PlayerPos = playerPos;
+
+        foreach (var functionBlock in _levelGenerator.FunctionBlocks)
+        {
+            FunctionBlockMapInfo mapInfo = new FunctionBlockMapInfo();
+            mapInfo.Id = functionBlock.Id;
+            mapInfo.Pos = functionBlock.GlobalPosition;
+            mapInfo.BlockHidden = !functionBlock.Visible;
+            mapState.FunctionBlockMapInfos.Add(mapInfo);
+        }
+        
+        _mapHistory.Push(mapState);
+    }
+
+    private void LoadMap(Player player)
+    {
+        if (_mapHistory.Count <= 0)
+        {
+            return;
+        }
+
+        MapState mapState = _mapHistory.Pop();
+
+        player.GlobalPosition = mapState.PlayerPos;
+
+        foreach (var functionBlock in _levelGenerator.FunctionBlocks)
+        {
+            foreach (var functionBlockMapInfo in mapState.FunctionBlockMapInfos)
+            {
+                if (functionBlockMapInfo.Id != functionBlock.Id)
+                {
+                    continue;
+                }
+                functionBlock.LoadFunctionBlockMapInfo(functionBlockMapInfo, player);
+            }
+        }
+    }
+}
+
+class MapState
+{
+    public Vector2 PlayerPos;
+    public List<FunctionBlockMapInfo> FunctionBlockMapInfos = new List<FunctionBlockMapInfo>();
+}
+
+public class FunctionBlockMapInfo
+{
+    public Vector2 Pos;
+    public int Id;
+    public bool BlockHidden;
 }
 
 class LevelDisplayInfo

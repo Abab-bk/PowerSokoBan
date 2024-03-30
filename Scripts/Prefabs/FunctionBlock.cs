@@ -17,6 +17,8 @@ public partial class FunctionBlock : Actor
 
     public LevelInfo LevelInfo;
     
+    public int Id;
+    
     private int _functionBlockValue = 2;
     private FunctionBlockType _functionBlockType = FunctionBlockType.Red;
     private Direction _functionBlockDirection = Direction.Up;
@@ -25,12 +27,41 @@ public partial class FunctionBlock : Actor
 
     private EatFunctionBlockCommand _eatenCommand;
 
-    public void Disabled()
+    public void LoadFunctionBlockMapInfo(FunctionBlockMapInfo mapInfo, Player player)
+    {
+        GlobalPosition = mapInfo.Pos;
+
+        if (mapInfo.BlockHidden == BlockHidden)
+        {
+            return;
+        }
+        
+        if (BlockHidden)
+        {
+            player.FunctionBlockInfos.Remove(_functionBlockInfo.Direction);
+            Show();
+            Enabled();
+            BlockHidden = mapInfo.BlockHidden;
+            LevelInfo.ReduceGotFunctionBlockCount(1);
+        }
+        else
+        {
+            player.FunctionBlockInfos.Add(_functionBlockInfo.Direction, _functionBlockInfo);
+            Hide();
+            Disabled();
+            BlockHidden = mapInfo.BlockHidden;
+            LevelInfo.AddGotFunctionBlockCount(1);
+        }
+        
+        Master.UpdateUiEvent();
+    }
+
+    private void Disabled()
     {
         _collisionShape2D.SetDeferred("disabled", true);
     }
 
-    public void Enabled()
+    private void Enabled()
     {
         _collisionShape2D.SetDeferred("disabled", false);
     }
@@ -97,8 +128,32 @@ public partial class FunctionBlock : Actor
         _eatenCommand.Direction = Master.PlayerLastDirection;
         _eatenCommand.LevelInfo = LevelInfo;
         _eatenCommand.Execute(this);
+    }
+    
+    public class EatFunctionBlockCommand : ICommand
+    {
+        public Player Player;
+        public FunctionBlockInfo FunctionBlockInfo;
+        public Direction Direction;
+        public LevelInfo LevelInfo;
         
-        // 仅仅是注册
-        player.EatFunctionBlock(_eatenCommand);
+        public void Execute(Actor actor)
+        {
+            FunctionBlockInfo.SetDirection(Direction);
+            
+            Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+            
+            LevelInfo.AddGotFunctionBlockCount(1);
+
+            if (FunctionBlockInfo.FunctionBlock != null)
+            {
+                actor.Hide();
+                actor.BlockHidden = true;
+                actor.UpdateUi();
+                ((FunctionBlock) actor).Disabled();
+            }
+            
+            Player.UpdateUi();
+        }
     }
 }

@@ -38,38 +38,39 @@ namespace PowerSokoBan.Scripts.Prefabs
             {
                 if (IsMoving()) return;
                 _leftMoveCommand.Execute(this);
-                RegisterCommand(_leftMoveCommand);
+                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_right"))
             {
                 if (IsMoving()) return;
                 _rightMoveCommand.Execute(this);
-                RegisterCommand(_rightMoveCommand);
+                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_up"))
             {
                 if (IsMoving()) return;
                 _upMoveCommand.Execute(this);
-                RegisterCommand(_upMoveCommand);
+                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_down"))
             {
                 if (IsMoving()) return;
                 _downMoveCommand.Execute(this);
-                RegisterCommand(_downMoveCommand);
+                Master.SaveMapEvent(GlobalPosition);
             }
 
             if (Input.IsActionJustPressed("Z"))
             {
                 if (IsMoving()) return;
-                Master.UndoCommandEvent();
+                // Master.UndoCommandEvent();
+                Master.LoadMapEvent(this);
                 UpdateUi();
             }
 
             if (Input.IsActionJustPressed("X"))
             {
                 if (IsMoving()) return;
-                Master.RedoCommandEvent();
+                // Master.RedoCommandEvent();
                 UpdateUi();
             }
 
@@ -81,8 +82,8 @@ namespace PowerSokoBan.Scripts.Prefabs
 
         public override void MoveTo(Direction dir)
         {
-            base.MoveTo(dir);
             Master.PlayerLastDirection = dir;
+            base.MoveTo(dir);
         }
 
         public override void UpdateUi()
@@ -100,11 +101,6 @@ namespace PowerSokoBan.Scripts.Prefabs
                 _directionSprites[functionBlockInfo.Direction].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/{typePath}.tres") as Texture2D;
             }
         }
-
-        public void EatFunctionBlock(EatFunctionBlockCommand eatFunctionBlockCommand)
-        {
-            RegisterCommand(eatFunctionBlockCommand);
-        }
     }
 
 
@@ -114,11 +110,6 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             actor.MoveTo(Actor.Direction.Left);
         }
-
-        public void Undo(Actor actor)
-        {
-            actor.MoveTo(Actor.Direction.Right);
-        }
     }
 
     public class RightMoveCommand : ICommand
@@ -126,11 +117,6 @@ namespace PowerSokoBan.Scripts.Prefabs
         public void Execute(Actor actor)
         {
             actor.MoveTo(Actor.Direction.Right);
-        }
-
-        public void Undo(Actor actor)
-        {
-            actor.MoveTo(Actor.Direction.Left);
         }
     }
 
@@ -140,11 +126,6 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             actor.MoveTo(Actor.Direction.Up);
         }
-
-        public void Undo(Actor actor)
-        {
-            actor.MoveTo(Actor.Direction.Down);
-        }
     }
 
     public class DownMoveCommand : ICommand
@@ -152,57 +133,6 @@ namespace PowerSokoBan.Scripts.Prefabs
         public void Execute(Actor actor)
         {
             actor.MoveTo(Actor.Direction.Down);
-        }
-
-        public void Undo(Actor actor)
-        {
-            actor.MoveTo(Actor.Direction.Up);
-        }
-    }
-
-    public class EatFunctionBlockCommand : ICommand
-    {
-        public Player Player;
-        public FunctionBlockInfo FunctionBlockInfo;
-        public Actor.Direction Direction;
-        public LevelInfo LevelInfo;
-        
-        // actor 是 FunctionBlock
-        public void Execute(Actor actor)
-        {
-            FunctionBlockInfo.SetDirection(Direction);
-            
-            Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
-            
-            LevelInfo.AddGotFunctionBlockCount(1);
-
-            if (FunctionBlockInfo.FunctionBlock != null)
-            {
-                actor.Hide();
-                actor.BlockHidden = true;
-                actor.UpdateUi();
-                ((FunctionBlock) actor).Disabled();
-            }
-            
-            Player.UpdateUi();
-        }
-
-        // 但这里的 actor 是 player
-        public void Undo(Actor actor)
-        {
-            FunctionBlockInfo.SetDirection(Direction);
-            LevelInfo.SetGotFunctionBlockCount(LevelInfo.GetGotFunctionBlockCount() - 1);
-            
-            actor.FunctionBlockInfos.Remove(Direction);
-            actor.UndoPublic();
-        
-            if (FunctionBlockInfo.FunctionBlock != null)
-            {
-                FunctionBlockInfo.FunctionBlock.Show();
-                FunctionBlockInfo.FunctionBlock.BlockHidden = false;
-                FunctionBlockInfo.FunctionBlock.UpdateUi();
-                FunctionBlockInfo.FunctionBlock.Enabled();
-            }
         }
     }
 }

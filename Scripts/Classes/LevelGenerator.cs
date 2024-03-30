@@ -12,6 +12,8 @@ public partial class LevelGenerator : Node2D
     [Export]
     private TileMap _tileMap;
 
+    public List<FunctionBlock> FunctionBlocks = new List<FunctionBlock>();
+    
     const int GirdSize = 64;
 
     public LevelInfo ResetGenerateLevel(string fileName)
@@ -22,7 +24,8 @@ public partial class LevelGenerator : Node2D
     private LevelInfo GenerateLevel(string fileName)
     {
         _tileMap.Clear();
-
+        FunctionBlocks.Clear();
+        
         var file = FileAccess.Open("res://Assets/Levels/" + fileName + ".txt", FileAccess.ModeFlags.Read);
         if (file == null)
         {
@@ -37,6 +40,7 @@ public partial class LevelGenerator : Node2D
         var lines = text.Split('\n');
         var width = lines[0].Length;
         var height = lines.Length - 1;
+        int id = 0;
 
         for (int x = 0; x < width; x++)
         {
@@ -90,12 +94,17 @@ public partial class LevelGenerator : Node2D
 
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.FunctionBlock)
                     {
+                        id += 1;
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
                         functionBlock.LevelInfo = levelInfo;
                         levelInfo.AddTotalFunctionBlockCount(1);
                         CallDeferred("add_child", functionBlock);
                         functionBlock.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
                         functionBlock.CallDeferred("RulePosition");
+
+                        functionBlock.Id = id;
+                        
+                        FunctionBlocks.Add(functionBlock);
                         continue;
                     }
 
@@ -135,6 +144,8 @@ public partial class LevelGenerator : Node2D
                         AddChild(functionBlock);
                         functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
                         functionBlock.RulePosition();
+                        FunctionBlocks.Add(functionBlock);
+
                         continue;
                     }
                     
@@ -152,7 +163,13 @@ public class LevelInfo
 {
     private int _gotFunctionBlockCount = 0;
     private int _totalFunctionBlockCount = 0;
-    
+
+    public int ReduceGotFunctionBlockCount(int value)
+    {
+        _gotFunctionBlockCount -= value;
+        return _gotFunctionBlockCount;
+    }
+
     public int GetGotFunctionBlockCount()
     {
         return _gotFunctionBlockCount;
