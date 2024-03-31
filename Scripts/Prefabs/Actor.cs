@@ -37,7 +37,7 @@ public partial class Actor : Node2D
         _commandPool = new CommandPool(actor);
     }
 
-    public void RulePosition()
+    private void RulePosition()
     {
         GlobalPosition = GlobalPosition.Snapped(Vector2.One * _moveDistance);
         GlobalPosition += Vector2.One * _moveDistance / 2;
@@ -131,27 +131,35 @@ public partial class Actor : Node2D
             if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 0)
             {
                 // Box: 
-                if (Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2)) != null)
+                Actor foundActor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2));
+                if (foundActor != null)
                 {
                     return false;
                 }
-
                 functionBlock.MoveTo(dir);
                 return true;
-            } else if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 999 && HasSwap)
+            } 
+            // 如果下一格是 Swap and HasSwap
+            if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 999 && HasSwap)
             {
                 // Swap
-                if (Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2)) != null)
+                // 如果 两格 后 是 不是嘴巴 就 不可以推
+                Actor foundActor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2));
+                if (foundActor != null)
                 {
                     return false;
                 }
-                
                 functionBlock.MoveTo(dir);
                 return true;
             }
             
             if (actor.BlockHidden) return true;
-            if (FunctionBlockInfos.ContainsKey(dir)) return false;
+            if (FunctionBlockInfos.ContainsKey(dir))
+            {
+                if (FunctionBlockInfos[dir].FunctionBlockValue == 999) return true;
+                GD.Print("False 3");
+                return false;
+            }
             return true;
         }
 

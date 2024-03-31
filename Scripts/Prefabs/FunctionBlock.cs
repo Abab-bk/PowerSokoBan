@@ -179,10 +179,10 @@ public partial class FunctionBlock : Actor
 
             if (FunctionBlockInfo.FunctionBlock != null)
             {
-                ((FunctionBlock) actor).Disabled();
-                actor.Hide();
-                actor.BlockHidden = true;
-                actor.UpdateUi();
+                FunctionBlockInfo.FunctionBlock.Disabled();
+                FunctionBlockInfo.FunctionBlock.Hide();
+                FunctionBlockInfo.FunctionBlock.BlockHidden = true;
+                FunctionBlockInfo.FunctionBlock.UpdateUi();
             }
 
             Player.UpdateUi();
