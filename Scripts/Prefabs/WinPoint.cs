@@ -27,6 +27,6 @@ public partial class WinPoint : Actor
             return;
         }
 
-        Master.GetInstance().EnterNextLevelEvent();
+        Master.GetInstance().EnterNextLevelEvent(1);
     }
 }

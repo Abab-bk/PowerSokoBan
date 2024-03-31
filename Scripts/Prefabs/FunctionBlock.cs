@@ -3,8 +3,6 @@ using System;
 using System.Diagnostics;
 using PowerSokoBan.Scripts.Classes;
 using PowerSokoBan.Scripts.Enums;
-using PowerSokoBan.Scripts.Prefabs;
-using PowerSokoBan.Scripts.Prefabs.Components;
 
 namespace PowerSokoBan.Scripts.Prefabs;
 
@@ -23,7 +21,7 @@ public partial class FunctionBlock : Actor
     private FunctionBlockType _functionBlockType = FunctionBlockType.Red;
     private Direction _functionBlockDirection = Direction.Up;
     
-    private FunctionBlockInfo _functionBlockInfo;
+    public FunctionBlockInfo FunctionBlockInfo;
 
     private EatFunctionBlockCommand _eatenCommand;
 
@@ -38,7 +36,7 @@ public partial class FunctionBlock : Actor
         
         if (BlockHidden)
         {
-            player.FunctionBlockInfos.Remove(_functionBlockInfo.Direction);
+            player.FunctionBlockInfos.Remove(FunctionBlockInfo.Direction);
             Show();
             Enabled();
             BlockHidden = mapInfo.BlockHidden;
@@ -46,7 +44,7 @@ public partial class FunctionBlock : Actor
         }
         else
         {
-            player.FunctionBlockInfos.Add(_functionBlockInfo.Direction, _functionBlockInfo);
+            player.FunctionBlockInfos.Add(FunctionBlockInfo.Direction, FunctionBlockInfo);
             Hide();
             Disabled();
             BlockHidden = mapInfo.BlockHidden;
@@ -93,10 +91,13 @@ public partial class FunctionBlock : Actor
         _eatenCommand = new EatFunctionBlockCommand();
         
         ActorArea.AreaEntered += _actorArea_AreaEntered;
-        _functionBlockInfo = new FunctionBlockInfo(_functionBlockValue, _functionBlockType, _functionBlockDirection);
+        FunctionBlockInfo = new FunctionBlockInfo(_functionBlockValue, _functionBlockType, _functionBlockDirection);
         
         switch (_functionBlockValue)
         {
+            case 0:
+                _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Box.tres");
+                break;
             case 1:
                 _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/White1.tres");
                 break;
@@ -107,6 +108,16 @@ public partial class FunctionBlock : Actor
                 _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Blue3.tres");
                 break;
         }
+
+        // switch (_functionBlockType)
+        // {
+        //     case FunctionBlockType.Yellow:
+        //         _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Mouth.tres");
+        //         break;
+        //     case FunctionBlockType.Green:
+        //         _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Box.tres");
+        //         break;
+        // }
     }
 
     private void _actorArea_AreaEntered(Area2D area)
@@ -121,10 +132,10 @@ public partial class FunctionBlock : Actor
         
         Player player = (Player) area.Owner;
         
-        _functionBlockInfo.FunctionBlock = this;
+        FunctionBlockInfo.FunctionBlock = this;
 
         _eatenCommand.Player = player;
-        _eatenCommand.FunctionBlockInfo = _functionBlockInfo;
+        _eatenCommand.FunctionBlockInfo = FunctionBlockInfo;
         _eatenCommand.Direction = Master.PlayerLastDirection;
         _eatenCommand.LevelInfo = LevelInfo;
         _eatenCommand.Execute(this);
@@ -140,8 +151,16 @@ public partial class FunctionBlock : Actor
         public void Execute(Actor actor)
         {
             FunctionBlockInfo.SetDirection(Direction);
-            
-            Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+
+            if (FunctionBlockInfo.FunctionBlockValue == 0)
+            {
+                // 是箱子
+                Player.FunctionBlockInfos.Remove(Direction);
+            }
+            else
+            {
+                Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+            }
             
             LevelInfo.AddGotFunctionBlockCount(1);
 

@@ -3,10 +3,10 @@
 public enum FunctionBlockType
 {
     None,
-    White,
-    Red,
-    Blue,
-    Yellow,
-    Green,
+    White, // 普通Token
+    Red, // 走两格
+    Blue, // 走三格
+    Yellow, // 吸收
+    Green, // 箱子
 }
 

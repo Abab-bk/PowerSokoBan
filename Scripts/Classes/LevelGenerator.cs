@@ -62,6 +62,7 @@ public partial class LevelGenerator : Node2D
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.HiddenWall);
                             break;
                         case '0':
+                            // TODO: 0 是绿色，也就是箱子
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
                                 .SetValue(0);
@@ -72,6 +73,7 @@ public partial class LevelGenerator : Node2D
                                 .SetValue(int.Parse(letter.ToString()));
                             break;
                         case 'S':
+                            // TODO: S 是 Swap 也就是嘴巴
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.Swap);
                             break;
@@ -165,6 +167,8 @@ public class LevelInfo
 {
     private int _gotFunctionBlockCount = 0;
     private int _totalFunctionBlockCount = 0;
+    public int Id = 0;
+    public string PrintName = "";
 
     public int ReduceGotFunctionBlockCount(int value)
     {

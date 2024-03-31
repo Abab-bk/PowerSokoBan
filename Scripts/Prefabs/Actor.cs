@@ -81,10 +81,10 @@ public partial class Actor : Node2D
             Tween shockTween = CreateTween();
             _moving = true;
             
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.05f);
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.05f);
-            shockTween.TweenProperty(this, "global_position", originalPos, 0.05f);
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.02f);
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
+            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
+            shockTween.TweenProperty(this, "global_position", originalPos, 0.02f);
 
             await ToSignal(shockTween, "finished");
             _moving = false;
@@ -98,7 +98,7 @@ public partial class Actor : Node2D
         Tween tween = CreateTween();
         
         _moving = true;
-        tween.TweenProperty(this, "global_position", newPos, 0.2f);
+        tween.TweenProperty(this, "global_position", newPos, 0.1f);
         await ToSignal(tween, "finished");
         _moving = false;
     }
@@ -114,6 +114,21 @@ public partial class Actor : Node2D
         
         if (actor is FunctionBlock)
         {
+            FunctionBlock functionBlock = (FunctionBlock) actor;
+            
+            if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 0)
+            {
+                // Box: 
+                // 如果箱子的方向还有 Actor，就返回false
+                if (Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2)) != null)
+                {
+                    return false;
+                }
+
+                functionBlock.MoveTo(dir);
+                return true;
+            }
+            
             if (FunctionBlockInfos.ContainsKey(dir))
                 return false;
             if (actor.BlockHidden) return true;
@@ -144,7 +159,7 @@ public partial class Actor : Node2D
         return "UpFunctions";
     }
 
-    protected string FunctionBlockTypeToString(FunctionBlockType type)
+    private string FunctionBlockTypeToString(FunctionBlockType type)
     {
         switch (type)
         {

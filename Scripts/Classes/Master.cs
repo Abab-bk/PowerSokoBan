@@ -8,7 +8,7 @@ public class Master
     private static Master _instance;
     public Actor.Direction PlayerLastDirection { get; set; }
     
-    public delegate void EnterNextLevelEventHandler();
+    public delegate void EnterNextLevelEventHandler(int value);
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();
     public delegate void SaveMapEventHandler(Vector2 playerPos);
@@ -16,7 +16,7 @@ public class Master
 
     public delegate Actor GetActorByPosHandler(Vector2 position);
     
-    public EnterNextLevelEventHandler EnterNextLevelEvent = () => { };
+    public EnterNextLevelEventHandler EnterNextLevelEvent;
     public UpdateUiEventHandler UpdateUiEvent = () => { };
     public ResetCurrentLevelEventHandler ResetCurrentLevelEvent = () => { };
     public SaveMapEventHandler SaveMapEvent;

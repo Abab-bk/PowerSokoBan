@@ -18,6 +18,6 @@ public partial class Ui : Control
 
     public void UpdateUi()
     {
-        _label.Text = $"{_levelInfo.GetGotFunctionBlockCount()} / {_levelInfo.GetTotalFunctionBlockCount()}";
+        _label.Text = "Level: " + _levelInfo.Id + "  " + $"{_levelInfo.GetGotFunctionBlockCount()} / {_levelInfo.GetTotalFunctionBlockCount()}";
     }
 }

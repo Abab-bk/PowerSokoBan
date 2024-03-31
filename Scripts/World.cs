@@ -24,17 +24,17 @@ public partial class World : Node2D
     {
         if (!LoadGame())
         {
-            EnterNextLevel();
+            EnterNextLevel(1);
         }
         
         Master.GetInstance().UpdateUiEvent += UpdateUi;
-        Master.GetInstance().EnterNextLevelEvent += EnterNextLevel;
+        Master.GetInstance().EnterNextLevelEvent = EnterNextLevel;
         Master.GetInstance().ResetCurrentLevelEvent += ResetCurrentLevel;
         Master.GetInstance().SaveMapEvent = SaveMap;
         Master.GetInstance().LoadMapEvent = LoadMap;
         Master.GetInstance().GetActorByPosEvent = GetActorByPos;
     }
-
+    
     private void ResetCurrentLevel()
     {
         foreach (var child in _levelGenerator.GetChildren())
@@ -51,12 +51,26 @@ public partial class World : Node2D
             return;
         }
 
+        levelInfo.Id = _currentLevelIndex;
         Master.GetInstance().CanEnterNextLevel = false;
         _ui.SetLevelInfo(levelInfo);
         UpdateUi();
     }
-    
-    private void EnterNextLevel()
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (Input.IsActionJustPressed("P"))
+        {
+            EnterNextLevel(1);
+        }
+
+        if (Input.IsActionJustPressed("O"))
+        {
+            EnterNextLevel(-1);
+        }
+    }
+
+    private void EnterNextLevel(int value)
     {
         GD.Print("进入下一层");
         
@@ -65,7 +79,7 @@ public partial class World : Node2D
             child.CallDeferred("queue_free");
         }
         
-        _currentLevelIndex += 1;
+        _currentLevelIndex += value;
         SaveGame();
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
         
@@ -74,6 +88,7 @@ public partial class World : Node2D
             return;
         }
 
+        levelInfo.Id = _currentLevelIndex;
         Master.GetInstance().CanEnterNextLevel = false;
         _ui.SetLevelInfo(levelInfo);
         UpdateUi();
