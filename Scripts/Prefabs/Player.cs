@@ -100,6 +100,8 @@ namespace PowerSokoBan.Scripts.Prefabs
                 {
                     1 => "White",
                     2 => "Red",
+                    3 => "Blue",
+                    999 => "Yellow",
                     _ => "White",
                 };
 

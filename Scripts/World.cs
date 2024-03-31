@@ -201,6 +201,8 @@ public partial class World : Node2D
                 functionBlock.LoadFunctionBlockMapInfo(functionBlockMapInfo, player);
             }
         }
+
+        Master.GetInstance().UpdateUiEvent();
     }
 }
 

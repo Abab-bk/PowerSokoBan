@@ -4,4 +4,4 @@
 
 [resource]
 atlas = ExtResource("1_cpogx")
-region = Rect2(265, 94, 46, 34)
+region = Rect2(270, 94, 36, 35)

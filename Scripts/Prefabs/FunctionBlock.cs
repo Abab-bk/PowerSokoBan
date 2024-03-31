@@ -107,17 +107,11 @@ public partial class FunctionBlock : Actor
             case 3:
                 _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Blue3.tres");
                 break;
+            case 999:
+                // Swap -> 嘴巴
+                _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Mouth.tres");
+                break;
         }
-
-        // switch (_functionBlockType)
-        // {
-        //     case FunctionBlockType.Yellow:
-        //         _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Mouth.tres");
-        //         break;
-        //     case FunctionBlockType.Green:
-        //         _sprite2D.Texture = GD.Load<AtlasTexture>("res://Assets/Tokens/Box.tres");
-        //         break;
-        // }
     }
 
     private void _actorArea_AreaEntered(Area2D area)
@@ -157,21 +151,40 @@ public partial class FunctionBlock : Actor
                 // 是箱子
                 Player.FunctionBlockInfos.Remove(Direction);
             }
+            else if (FunctionBlockInfo.FunctionBlockValue == 999)
+            {
+                // 是嘴巴 : Swap
+                Player.HasSwap = true;
+                Player.SwapDirection = Direction;
+                FunctionBlockInfo.SetDirection(Player.SwapDirection);
+                Player.FunctionBlockInfos[Player.SwapDirection] = FunctionBlockInfo;
+            }
             else
             {
-                Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+                if (Player.HasSwap == false)
+                {
+                    Player.FunctionBlockInfos[Direction] = FunctionBlockInfo;
+                }
+                else
+                {
+                    // Has Swap
+                    Player.FunctionBlockInfos.Remove(Player.SwapDirection);
+                    FunctionBlockInfo.SetDirection(Player.SwapDirection);
+                    Player.FunctionBlockInfos[Player.SwapDirection] = FunctionBlockInfo;
+                    Player.HasSwap = false;
+                }
             }
             
             LevelInfo.AddGotFunctionBlockCount(1);
 
             if (FunctionBlockInfo.FunctionBlock != null)
             {
+                ((FunctionBlock) actor).Disabled();
                 actor.Hide();
                 actor.BlockHidden = true;
                 actor.UpdateUi();
-                ((FunctionBlock) actor).Disabled();
             }
-            
+
             Player.UpdateUi();
         }
     }

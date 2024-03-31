@@ -17,6 +17,9 @@ public partial class Actor : Node2D
     private bool _moving;
     public bool BlockHidden;
     
+    public bool HasSwap = false;
+    public Direction SwapDirection = Direction.Up;
+    
     private CommandPool _commandPool;
 
     private Dictionary<Direction, Vector2> _inputs = new Dictionary<Direction, Vector2>()
@@ -42,7 +45,16 @@ public partial class Actor : Node2D
     
     private int GetMoveDistance(Direction dir)
     {
-        if (FunctionBlockInfos.ContainsKey(dir)) return (_moveDistance * FunctionBlockInfos[dir].FunctionBlockValue);
+        if (FunctionBlockInfos.ContainsKey(dir))
+        {
+            if (FunctionBlockInfos[dir].FunctionBlockValue == 999)
+            {
+                return _moveDistance;
+            }
+
+            return (_moveDistance * FunctionBlockInfos[dir].FunctionBlockValue);
+        }
+
         return _moveDistance;
     }
     
@@ -119,7 +131,6 @@ public partial class Actor : Node2D
             if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 0)
             {
                 // Box: 
-                // 如果箱子的方向还有 Actor，就返回false
                 if (Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2)) != null)
                 {
                     return false;
@@ -127,12 +138,20 @@ public partial class Actor : Node2D
 
                 functionBlock.MoveTo(dir);
                 return true;
+            } else if (functionBlock.FunctionBlockInfo.FunctionBlockValue == 999 && HasSwap)
+            {
+                // Swap
+                if (Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2)) != null)
+                {
+                    return false;
+                }
+                
+                functionBlock.MoveTo(dir);
+                return true;
             }
             
-            if (FunctionBlockInfos.ContainsKey(dir))
-                return false;
             if (actor.BlockHidden) return true;
-
+            if (FunctionBlockInfos.ContainsKey(dir)) return false;
             return true;
         }
 

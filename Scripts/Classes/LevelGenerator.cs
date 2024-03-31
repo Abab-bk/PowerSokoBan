@@ -61,13 +61,7 @@ public partial class LevelGenerator : Node2D
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.HiddenWall);
                             break;
-                        case '0':
-                            // TODO: 0 是绿色，也就是箱子
-                            obj = new MapBlockInfo()
-                                .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
-                                .SetValue(0);
-                            break;
-                        case '1': case '2': case '3':
+                        case '0': case '1': case '2': case '3':
                             obj = new MapBlockInfo()
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
                                 .SetValue(int.Parse(letter.ToString()));
@@ -75,7 +69,8 @@ public partial class LevelGenerator : Node2D
                         case 'S':
                             // TODO: S 是 Swap 也就是嘴巴
                             obj = new MapBlockInfo()
-                                .SetMapBlockType(MapBlockInfo.MapBlockType.Swap);
+                                .SetMapBlockType(MapBlockInfo.MapBlockType.FunctionBlock)
+                                .SetValue(999);
                             break;
                         case '@':
                             obj = new MapBlockInfo()
@@ -136,20 +131,20 @@ public partial class LevelGenerator : Node2D
                     {
                         _tileMap.SetCell(0, new Vector2I(x, y), 0);
                     }
-
-                    // TODO: Add Swap.
-                    if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Swap)
-                    {
-                        FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
-                        functionBlock.LevelInfo = levelInfo;
-                        levelInfo.AddTotalFunctionBlockCount(1);
-                        CallDeferred("add_child", functionBlock);
-                        functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
-                        functionBlock.RulePosition();
-                        FunctionBlocks.Add(functionBlock);
-
-                        continue;
-                    }
+                    
+                    // // TODO: Add Swap.
+                    // if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Swap)
+                    // {
+                    //     FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
+                    //     functionBlock.LevelInfo = levelInfo;
+                    //     levelInfo.AddTotalFunctionBlockCount(1);
+                    //     CallDeferred("add_child", functionBlock);
+                    //     functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
+                    //     functionBlock.RulePosition();
+                    //     FunctionBlocks.Add(functionBlock);
+                    //
+                    //     continue;
+                    // }
                     
                     // Add Wall
                     Wall wall = (Wall)ActorFactory.CreateActor(ActorType.Wall);
