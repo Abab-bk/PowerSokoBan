@@ -1,4 +1,5 @@
-﻿using Godot.Collections;
+﻿using System.Threading.Tasks;
+using Godot.Collections;
 using PowerSokoBan.Scripts.Classes;
 using PowerSokoBan.Scripts.Enums;
 using PowerSokoBan.Scripts.Prefabs.Components;
@@ -17,8 +18,6 @@ public partial class Actor : Node2D
     public bool BlockHidden;
     
     private CommandPool _commandPool;
-    private RayCast2D _rayCast2D;
-    private RayCast2D _winPointRayCast2D;
 
     private Dictionary<Direction, Vector2> _inputs = new Dictionary<Direction, Vector2>()
     {
@@ -62,26 +61,9 @@ public partial class Actor : Node2D
     
     public override void _Ready()
     {
+        AddToGroup("Actors");
         FunctionBlockInfos = new System.Collections.Generic.Dictionary<Direction, FunctionBlockInfo>();
-        _rayCast2D = new RayCast2D();
-        _winPointRayCast2D = new RayCast2D();
         _commandPool = new CommandPool(this);
-        
-        AddChild(_rayCast2D);
-        AddChild(_winPointRayCast2D);
-        
-        CollisionShape2D collisionShape2D = new CollisionShape2D();
-        CircleShape2D circleShape2D = new CircleShape2D();
-        
-        circleShape2D.Radius = 1;
-        collisionShape2D.Shape = circleShape2D;
-        
-        _rayCast2D.CollisionMask = 0;
-        _rayCast2D.SetCollisionMaskValue(2, true);
-        
-        _winPointRayCast2D.CollisionMask = 0;
-        _winPointRayCast2D.SetCollisionMaskValue(5, true);
-        _winPointRayCast2D.CollideWithAreas = true;
         
         RulePosition();
     }
@@ -123,40 +105,24 @@ public partial class Actor : Node2D
 
     private bool AllowMoveTo(Direction dir)
     {
-        _rayCast2D.TargetPosition =  _inputs[dir] * GetMoveDistance(dir);
-        _rayCast2D.ForceRaycastUpdate();
-        _winPointRayCast2D.TargetPosition = _rayCast2D.TargetPosition;
-        _winPointRayCast2D.ForceRaycastUpdate();
+        Actor actor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * GetMoveDistance(dir));
 
-        if (_winPointRayCast2D.IsColliding()) return true;
-        
-        if (!_rayCast2D.IsColliding()) return true;
-
-        var collider = _rayCast2D.GetCollider();
-
-        // FIXME: 如果目标位置是终点，但是隔着墙，就会导致冲不到终点
-        if (collider is ActorBody == false) return false;
-
-        var actorBody = (ActorBody)collider;
-        
-        if (actorBody.Actor.BlockHidden)
+        if (actor is null)
         {
             return true;
         }
-
-        if (actorBody.Actor is Box)
-        {
-            var boxCollider = (Box)actorBody.Actor;
-            boxCollider.MoveTo(dir);
-            return true;
-        }
-
-        if (actorBody.Actor is FunctionBlock)
+        
+        if (actor is FunctionBlock)
         {
             if (FunctionBlockInfos.ContainsKey(dir))
                 return false;
+            if (actor.BlockHidden) return true;
+
             return true;
         }
+
+        if (actor is WinPoint) return true;
+        if (actor is Wall) return false;
         
         return false;
     }

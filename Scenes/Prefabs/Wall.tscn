@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://csdm2rjqffla7"]
+
+[ext_resource type="Texture2D" uid="uid://c8gj80j0w12rd" path="res://Assets/Textures/WallTileset.png" id="1_duipr"]
+[ext_resource type="Script" path="res://Scripts/Prefabs/Wall.cs" id="1_k5er4"]
+
+[node name="Wall" type="Node2D"]
+script = ExtResource("1_k5er4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_duipr")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)

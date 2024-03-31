@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PowerSokoBan.Scripts.Classes;
 
 namespace PowerSokoBan.Scripts.Prefabs
@@ -62,7 +63,6 @@ namespace PowerSokoBan.Scripts.Prefabs
             if (Input.IsActionJustPressed("Z"))
             {
                 if (IsMoving()) return;
-                // Master.UndoCommandEvent();
                 Master.LoadMapEvent(this);
                 UpdateUi();
             }
@@ -70,7 +70,6 @@ namespace PowerSokoBan.Scripts.Prefabs
             if (Input.IsActionJustPressed("X"))
             {
                 if (IsMoving()) return;
-                // Master.RedoCommandEvent();
                 UpdateUi();
             }
 
@@ -91,13 +90,19 @@ namespace PowerSokoBan.Scripts.Prefabs
             foreach (KeyValuePair<Direction, Sprite2D> kvp in _directionSprites)
             {
                 string directionPath = DirectionToString(kvp.Key);
-                _directionSprites[kvp.Key].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/White.tres") as Texture2D;
+                _directionSprites[kvp.Key].Texture = null;
             }
             
             foreach (FunctionBlockInfo functionBlockInfo in FunctionBlockInfos.Values)
             {
                 string directionPath = DirectionToString(functionBlockInfo.Direction);
-                string typePath = FunctionBlockTypeToString(functionBlockInfo.FunctionBlockType);
+                string typePath = functionBlockInfo.FunctionBlockValue switch
+                {
+                    1 => "White",
+                    2 => "Red",
+                    _ => "White",
+                };
+
                 _directionSprites[functionBlockInfo.Direction].Texture = GD.Load($"res://Assets/FunctionSprites/{directionPath}/{typePath}.tres") as Texture2D;
             }
         }

@@ -32,6 +32,7 @@ public partial class World : Node2D
         Master.GetInstance().ResetCurrentLevelEvent += ResetCurrentLevel;
         Master.GetInstance().SaveMapEvent = SaveMap;
         Master.GetInstance().LoadMapEvent = LoadMap;
+        Master.GetInstance().GetActorByPosEvent = GetActorByPos;
     }
 
     private void ResetCurrentLevel()
@@ -40,6 +41,8 @@ public partial class World : Node2D
         {
             child.CallDeferred("queue_free");
         }
+
+        _mapHistory = new Stack<MapState>();
         
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
         
@@ -146,6 +149,19 @@ public partial class World : Node2D
         }
         
         _mapHistory.Push(mapState);
+    }
+
+    private Actor GetActorByPos(Vector2 pos)
+    {
+        foreach (Actor actor in GetTree().GetNodesInGroup("Actors"))
+        {
+            if (actor.GlobalPosition == pos)
+            {
+                return actor;
+            }
+        }
+
+        return null;
     }
 
     private void LoadMap(Player player)

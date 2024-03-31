@@ -1,12 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://huswsv6iufo6"]
+[gd_scene load_steps=8 format=3 uid="uid://huswsv6iufo6"]
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
 [ext_resource type="Texture2D" uid="uid://daqan8rbrsx2p" path="res://Assets/Textures/Player.png" id="2_ewdf3"]
-[ext_resource type="Texture2D" uid="uid://lml376jsm21g" path="res://Assets/FunctionSprites/DownFunctions/White.tres" id="3_ejifn"]
 [ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_jtrh1"]
-[ext_resource type="Texture2D" uid="uid://cxaf37t7m8fxe" path="res://Assets/FunctionSprites/LeftFunctions/White.tres" id="4_0xdrd"]
-[ext_resource type="Texture2D" uid="uid://cyhq8ryw0us1v" path="res://Assets/FunctionSprites/RightFunctions/White.tres" id="5_tyedi"]
-[ext_resource type="Texture2D" uid="uid://cdixkywx0jhot" path="res://Assets/FunctionSprites/UpFunctions/White.tres" id="6_kk1ls"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lacxu"]
 atlas = ExtResource("2_ewdf3")
@@ -39,26 +35,22 @@ texture = SubResource("AtlasTexture_h0isp")
 
 [node name="DownFunction" type="Sprite2D" parent="Node2D/Node2D"]
 unique_name_in_owner = true
-position = Vector2(0, 12)
-texture = ExtResource("3_ejifn")
+position = Vector2(0, 26)
 region_rect = Rect2(73, 94, 46, 34)
 
 [node name="LeftFunction" type="Sprite2D" parent="Node2D/Node2D"]
 unique_name_in_owner = true
-position = Vector2(-12, 0)
-texture = ExtResource("4_0xdrd")
+position = Vector2(-27, 0)
 region_rect = Rect2(64, 137, 34, 46)
 
 [node name="RightFunction" type="Sprite2D" parent="Node2D/Node2D"]
 unique_name_in_owner = true
-position = Vector2(12, 0)
-texture = ExtResource("5_tyedi")
+position = Vector2(27, 0)
 region_rect = Rect2(94, 201, 34, 46)
 
 [node name="UpFunction" type="Sprite2D" parent="Node2D/Node2D"]
 unique_name_in_owner = true
-position = Vector2(0, -12)
-texture = ExtResource("6_kk1ls")
+position = Vector2(0, -27)
 region_rect = Rect2(73, 0, 46, 34)
 
 [node name="ActorBody" type="StaticBody2D" parent="." node_paths=PackedStringArray("Actor")]

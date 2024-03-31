@@ -141,7 +141,7 @@ public partial class LevelGenerator : Node2D
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
                         functionBlock.LevelInfo = levelInfo;
                         levelInfo.AddTotalFunctionBlockCount(1);
-                        AddChild(functionBlock);
+                        CallDeferred("add_child", functionBlock);
                         functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
                         functionBlock.RulePosition();
                         FunctionBlocks.Add(functionBlock);
@@ -149,8 +149,10 @@ public partial class LevelGenerator : Node2D
                         continue;
                     }
                     
-                    // Vector2 tilePos = new Vector2(x * GirdSize, y * GirdSize);
-                    _tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(0, 0));
+                    // Add Wall
+                    Wall wall = (Wall)ActorFactory.CreateActor(ActorType.Wall);
+                    CallDeferred("add_child", wall);
+                    wall.GlobalPosition = new Vector2(x, y) * GirdSize;
                 }
             }
         }

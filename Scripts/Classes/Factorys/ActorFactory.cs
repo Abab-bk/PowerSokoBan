@@ -13,6 +13,7 @@ public enum ActorType
     FunctionBlockYellow,
     WinPoint,
     Player,
+    Wall,
 }
 
 public class ActorFactory
@@ -84,6 +85,9 @@ public class ActorFactory
                 return winPoint;
             case ActorType.Player:
                 return GD.Load<PackedScene>("res://Scenes/Prefabs/Player.tscn").Instantiate() as Player;
+            case ActorType.Wall:
+                return GD.Load<PackedScene>("res://Scenes/Prefabs/Wall.tscn").Instantiate() as Wall;
+            
             default:
                 return null;
         }
