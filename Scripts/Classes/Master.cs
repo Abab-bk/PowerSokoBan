@@ -7,7 +7,8 @@ public class Master
 {
     private static Master _instance;
     public Actor.Direction PlayerLastDirection { get; set; }
-    
+    public Player Player;
+
     public delegate void EnterNextLevelEventHandler(int value);
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();

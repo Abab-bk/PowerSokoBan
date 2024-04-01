@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Godot.Collections;
+﻿using Godot.Collections;
 using PowerSokoBan.Scripts.Classes;
 using PowerSokoBan.Scripts.Enums;
-using PowerSokoBan.Scripts.Prefabs.Components;
 
 namespace PowerSokoBan.Scripts.Prefabs;
 
@@ -12,7 +10,7 @@ using Godot;
 public partial class Actor : Node2D
 {
     protected readonly Master Master = Master.GetInstance();
-
+    
     private int _moveDistance = 64;
     private bool _moving;
     public bool BlockHidden;
@@ -58,7 +56,7 @@ public partial class Actor : Node2D
         return _moveDistance;
     }
     
-    protected bool IsMoving()
+    public bool IsMoving()
     {
         return _moving;
     }

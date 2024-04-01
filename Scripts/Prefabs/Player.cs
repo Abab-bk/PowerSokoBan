@@ -2,11 +2,14 @@ using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PowerSokoBan.Scripts.Classes;
+using PowerSokoBan.Scripts.Prefabs.Components;
 
 namespace PowerSokoBan.Scripts.Prefabs
 {
     public partial class Player : Actor
     {
+        [Export] private SwipeDetector _swipeDetector;
+        
         private Godot.Collections.Dictionary<Direction, Sprite2D> _directionSprites;
         
         private LeftMoveCommand _leftMoveCommand;
@@ -17,6 +20,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         public override void _Ready()
         {
             base._Ready();
+            Master.Player = this;
             
             _directionSprites = new Godot.Collections.Dictionary<Direction, Sprite2D>()
             {
@@ -30,6 +34,35 @@ namespace PowerSokoBan.Scripts.Prefabs
             _rightMoveCommand = new RightMoveCommand();
             _upMoveCommand = new UpMoveCommand();
             _downMoveCommand = new DownMoveCommand();
+            
+            _swipeDetector.Swiped += MoveCommandByDir;
+            _swipeDetector.SwipedCanceled += delegate { };
+        }
+
+        private void MoveCommandByDir(Vector2 dir)
+        {
+            if (dir == Vector2.Left)
+            {
+                _rightMoveCommand.Execute(this);
+                return;
+            }
+
+            if (dir == Vector2.Right)
+            {
+                _leftMoveCommand.Execute(this);
+                return;
+            }
+
+            if (dir == Vector2.Up)
+            {
+                _downMoveCommand.Execute(this);
+                return;
+            }
+
+            if (dir == Vector2.Down)
+            {
+                _upMoveCommand.Execute(this);
+            }
         }
         
         public override void _PhysicsProcess(double delta)
@@ -37,27 +70,20 @@ namespace PowerSokoBan.Scripts.Prefabs
             base._PhysicsProcess(delta);
             if (Input.IsActionJustPressed("ui_left"))
             {
-                if (IsMoving()) return;
                 _leftMoveCommand.Execute(this);
-                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_right"))
             {
-                if (IsMoving()) return;
                 _rightMoveCommand.Execute(this);
-                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_up"))
             {
-                if (IsMoving()) return;
                 _upMoveCommand.Execute(this);
-                Master.SaveMapEvent(GlobalPosition);
             }
             if (Input.IsActionJustPressed("ui_down"))
             {
                 if (IsMoving()) return;
                 _downMoveCommand.Execute(this);
-                Master.SaveMapEvent(GlobalPosition);
             }
 
             if (Input.IsActionJustPressed("Z"))
@@ -115,7 +141,9 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
+            if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Left);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
         }
     }
 
@@ -123,7 +151,9 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
+            if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Right);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
         }
     }
 
@@ -131,7 +161,9 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
+            if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Up);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
         }
     }
 
@@ -139,7 +171,9 @@ namespace PowerSokoBan.Scripts.Prefabs
     {
         public void Execute(Actor actor)
         {
+            if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Down);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
         }
     }
 }

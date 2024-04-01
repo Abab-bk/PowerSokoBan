@@ -8,8 +8,22 @@ public partial class Ui : Control
 {
     [Export]
     private Label _label;
+    [Export] private TextureButton _undoButton;
+    [Export] private TextureButton _restartButton;
 
     private LevelInfo _levelInfo;
+    
+    public override void _Ready()
+    {
+        _undoButton.Pressed += delegate
+        {
+            Master.GetInstance().LoadMapEvent(Master.GetInstance().Player);
+        };
+        _restartButton.Pressed += delegate
+        {
+            Master.GetInstance().ResetCurrentLevelEvent();
+        };
+    }
 
     public void SetLevelInfo(LevelInfo levelInfo)
     {

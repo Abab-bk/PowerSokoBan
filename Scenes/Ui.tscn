@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://brf028sugc1yw"]
+[gd_scene load_steps=6 format=3 uid="uid://brf028sugc1yw"]
 
 [ext_resource type="Script" path="res://Scripts/Ui.cs" id="1_nubap"]
+[ext_resource type="Texture2D" uid="uid://ddkjqgjwirnyj" path="res://Assets/Ui/Buttons/UndoLevelBtn.png" id="2_yapai"]
+[ext_resource type="Texture2D" uid="uid://cia0tm76ftru0" path="res://Assets/Ui/Buttons/UndoLevelBtnPressed.png" id="3_h5kei"]
+[ext_resource type="Texture2D" uid="uid://7101udlf8cb3" path="res://Assets/Ui/Buttons/ResetLevelBtn.png" id="4_r0aok"]
+[ext_resource type="Texture2D" uid="uid://cr2m1gjnftbri" path="res://Assets/Ui/Buttons/ResetLevelBtnPressed.png" id="5_s26rm"]
 
-[node name="UI" type="Control" node_paths=PackedStringArray("_label")]
+[node name="UI" type="Control" node_paths=PackedStringArray("_label", "_undoButton", "_restartButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +15,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nubap")
 _label = NodePath("Label")
+_undoButton = NodePath("Buttons/UndoBtn")
+_restartButton = NodePath("Buttons/RestartBtn")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
@@ -19,3 +25,25 @@ offset_top = 18.0
 offset_right = 116.0
 offset_bottom = 41.0
 text = "Tokens: 1/10"
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -133.0
+offset_right = 222.0
+offset_bottom = -31.0
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="UndoBtn" type="TextureButton" parent="Buttons"]
+layout_mode = 2
+texture_normal = ExtResource("2_yapai")
+texture_pressed = ExtResource("3_h5kei")
+
+[node name="RestartBtn" type="TextureButton" parent="Buttons"]
+layout_mode = 2
+texture_normal = ExtResource("4_r0aok")
+texture_pressed = ExtResource("5_s26rm")
