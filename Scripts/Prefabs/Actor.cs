@@ -83,22 +83,26 @@ public partial class Actor : Node2D
         Master.UpdateUiEvent();
     }
 
+    protected async void Shock(Vector2 originalPos)
+    {
+        Tween shockTween = CreateTween();
+        _moving = true;
+            
+        shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.02f);
+        shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
+        shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
+        shockTween.TweenProperty(this, "global_position", originalPos, 0.02f);
+
+        await ToSignal(shockTween, "finished");
+        _moving = false;
+    }
+
     public virtual async void MoveTo(Direction dir)
     {
         if (!AllowMoveTo(dir))
         {
-            Vector2 originalPos = GlobalPosition;
-            Tween shockTween = CreateTween();
-            _moving = true;
+            Shock(GlobalPosition);
             
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X - 20, GlobalPosition.Y), 0.02f);
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
-            shockTween.TweenProperty(this, "global_position", new Vector2(GlobalPosition.X + 20, GlobalPosition.Y), 0.02f);
-            shockTween.TweenProperty(this, "global_position", originalPos, 0.02f);
-
-            await ToSignal(shockTween, "finished");
-            _moving = false;
-            return;
         }
 
         if (_moving) return;
@@ -132,6 +136,7 @@ public partial class Actor : Node2D
                 Actor foundActor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2));
                 if (foundActor != null)
                 {
+                    foundActor.Shock(actor.GlobalPosition);
                     return false;
                 }
                 functionBlock.MoveTo(dir);
@@ -145,6 +150,7 @@ public partial class Actor : Node2D
                 Actor foundActor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * (_moveDistance * 2));
                 if (foundActor != null)
                 {
+                    foundActor.Shock(actor.GlobalPosition);
                     return false;
                 }
                 functionBlock.MoveTo(dir);
@@ -155,15 +161,20 @@ public partial class Actor : Node2D
             if (FunctionBlockInfos.ContainsKey(dir))
             {
                 if (FunctionBlockInfos[dir].FunctionBlockValue == 999) return true;
-                GD.Print("False 3");
+                // GD.Print("False 3");
+                actor.Shock(actor.GlobalPosition);
                 return false;
             }
             return true;
         }
 
         if (actor is WinPoint) return true;
-        if (actor is Wall) return false;
-        
+        if (actor is Wall)
+        {
+            actor.Shock(actor.GlobalPosition);
+            return false;
+        }
+
         return false;
     }
 
