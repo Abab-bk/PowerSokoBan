@@ -34,6 +34,7 @@ public partial class Ui : Control
 
     public void UpdateUi()
     {
-        _label.Text = "Level: " + _levelInfo.Id + "  " + $"{_levelInfo.GetGotFunctionBlockCount()} / {_levelInfo.GetTotalFunctionBlockCount()}";
+        // 第 1 关   收集：1/2
+        _label.Text = $"第 {_levelInfo.Id} 关   收集：{_levelInfo.GetGotFunctionBlockCount()}/{_levelInfo.GetTotalFunctionBlockCount()}";
     }
 }

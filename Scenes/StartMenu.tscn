@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cdvliakdytxmf" path="res://Assets/Ui/Logo.png" id="6_3a5lw"]
 [ext_resource type="AudioStream" uid="uid://dn43kduoiq5sw" path="res://Assets/Audios/Background2.ogg" id="8_omoy4"]
 
-[node name="StartMenu" type="Control" node_paths=PackedStringArray("_startButton", "_exitButton")]
+[node name="StartMenu" type="Control" node_paths=PackedStringArray("_startButton", "_exitButton", "_audioStreamPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +19,7 @@ grow_vertical = 2
 script = ExtResource("1_ljhg5")
 _startButton = NodePath("Content/VBoxContainer/Buttons/StartBtn")
 _exitButton = NodePath("Content/VBoxContainer/Buttons/EndBtn")
+_audioStreamPlayer = NodePath("AudioStreamPlayer")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -78,4 +79,3 @@ texture_pressed = ExtResource("5_34bnm")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_omoy4")
-autoplay = true
