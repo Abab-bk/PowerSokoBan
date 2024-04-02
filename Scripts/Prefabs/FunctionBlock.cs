@@ -153,7 +153,7 @@ public partial class FunctionBlock : Actor
             }
             else if (FunctionBlockInfo.FunctionBlockValue == 999)
             {
-                // 是嘴巴 : Swap
+                // 获得 Swap
                 Player.HasSwap = true;
                 Player.SwapDirection = Direction;
                 FunctionBlockInfo.SetDirection(Player.SwapDirection);
@@ -167,7 +167,7 @@ public partial class FunctionBlock : Actor
                 }
                 else
                 {
-                    // Has Swap
+                    // 进行 Swap
                     Player.FunctionBlockInfos.Remove(Player.SwapDirection);
                     FunctionBlockInfo.SetDirection(Player.SwapDirection);
                     Player.FunctionBlockInfos[Player.SwapDirection] = FunctionBlockInfo;
@@ -176,6 +176,7 @@ public partial class FunctionBlock : Actor
             }
             
             LevelInfo.AddGotFunctionBlockCount(1);
+            Master.GetInstance().PlaySoundEvent(Audios.Eat);
 
             if (FunctionBlockInfo.FunctionBlock != null)
             {

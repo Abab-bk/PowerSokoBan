@@ -102,7 +102,7 @@ public partial class Actor : Node2D
         if (!AllowMoveTo(dir))
         {
             Shock(GlobalPosition);
-            
+            Master.PlaySoundEvent(Audios.Shock);
         }
 
         if (_moving) return;
@@ -110,6 +110,11 @@ public partial class Actor : Node2D
         Vector2 newPos = GlobalPosition + _inputs[dir] * GetMoveDistance(dir);
         
         Tween tween = CreateTween();
+        
+        if (this is Player)
+        {
+            Master.GetInstance().PlaySoundEvent(Audios.Move);
+        }
         
         _moving = true;
         tween.TweenProperty(this, "global_position", newPos, 0.1f);

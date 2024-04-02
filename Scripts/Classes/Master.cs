@@ -12,8 +12,10 @@ public class Master
     public delegate void EnterNextLevelEventHandler(int value);
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();
-    public delegate void SaveMapEventHandler(Vector2 playerPos);
+    public delegate void SaveMapEventHandler(Vector2 playerPos, System.Collections.Generic.Dictionary<Actor.Direction, FunctionBlockInfo> functionBlockInfos);
     public delegate void LoadMapEventHandler(Player player);
+
+    public delegate void PlaySoundHandler(Audios audio);
 
     public delegate Actor GetActorByPosHandler(Vector2 position);
     
@@ -23,6 +25,7 @@ public class Master
     public SaveMapEventHandler SaveMapEvent;
     public LoadMapEventHandler LoadMapEvent;
     public GetActorByPosHandler GetActorByPosEvent;
+    public PlaySoundHandler PlaySoundEvent;
 
     public bool CanEnterNextLevel;
     

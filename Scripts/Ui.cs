@@ -17,10 +17,12 @@ public partial class Ui : Control
     {
         _undoButton.Pressed += delegate
         {
+            Master.GetInstance().PlaySoundEvent(Audios.Click);
             Master.GetInstance().LoadMapEvent(Master.GetInstance().Player);
         };
         _restartButton.Pressed += delegate
         {
+            Master.GetInstance().PlaySoundEvent(Audios.Click);
             Master.GetInstance().ResetCurrentLevelEvent();
         };
     }

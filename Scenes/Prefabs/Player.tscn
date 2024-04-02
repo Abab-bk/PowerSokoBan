@@ -74,6 +74,7 @@ shape = SubResource("RectangleShape2D_u7ccg")
 debug_color = Color(0.988235, 0, 0.301961, 0.419608)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
 
 [node name="SwipeDetector" type="Node" parent="."]
 script = ExtResource("4_82kq7")

@@ -27,6 +27,10 @@ public partial class WinPoint : Actor
             return;
         }
 
-        Master.GetInstance().EnterNextLevelEvent(1);
+        Master.GetInstance().PlaySoundEvent(Audios.Win);
+        GetTree().CreateTimer(3.5f).Timeout += delegate
+        {
+            Master.GetInstance().EnterNextLevelEvent(1);
+        };
     }
 }

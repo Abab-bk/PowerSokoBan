@@ -33,15 +33,40 @@ public partial class World : Node2D
         Master.GetInstance().SaveMapEvent = SaveMap;
         Master.GetInstance().LoadMapEvent = LoadMap;
         Master.GetInstance().GetActorByPosEvent = GetActorByPos;
+        Master.GetInstance().PlaySoundEvent = PlaySound;
+        
+        Master.GetInstance().PlaySoundEvent(Audios.BackgroundMusic);
+    }
+    
+    private void PlaySound(Audios audio)
+    {
+        switch (audio)
+        {
+            case Audios.Move:
+                GetNode<AudioStreamPlayer>("Sounds/Move").Play();
+                break;
+            case Audios.BackgroundMusic:
+                GetNode<AudioStreamPlayer>("Sounds/BackgroundMusic").Play();
+                break;
+            case Audios.Win:
+                GetNode<AudioStreamPlayer>("Sounds/Win").Play();
+                break;
+            case Audios.Shock:
+                GetNode<AudioStreamPlayer>("Sounds/Shock").Play();
+                break;
+            case Audios.Eat:
+                GetNode<AudioStreamPlayer>("Sounds/Eat").Play();
+                break;
+            case Audios.Click:
+                GetNode<AudioStreamPlayer>("Sounds/Click").Play();
+                break;
+        }
     }
     
     private void ResetCurrentLevel()
     {
-        foreach (var child in _levelGenerator.GetChildren())
-        {
-            child.CallDeferred("queue_free");
-        }
-
+        _levelGenerator.DestroyAllNodes();
+        
         _mapHistory = new Stack<MapState>();
         
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
@@ -73,13 +98,15 @@ public partial class World : Node2D
     private void EnterNextLevel(int value)
     {
         GD.Print("进入下一层");
-        
-        foreach (var child in _levelGenerator.GetChildren())
-        {
-            child.CallDeferred("queue_free");
-        }
+        _levelGenerator.DestroyAllNodes();
         
         _currentLevelIndex += value;
+        
+        if (_currentLevelIndex < 0)
+        {
+            _currentLevelIndex = 0;
+        }
+        
         SaveGame();
         LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
         
@@ -148,11 +175,12 @@ public partial class World : Node2D
         return true;
     }
 
-    private void SaveMap(Vector2 playerPos)
+    private void SaveMap(Vector2 playerPos, Dictionary<Actor.Direction, FunctionBlockInfo> functionBlocks)
     {
         MapState mapState = new MapState();
 
         mapState.PlayerPos = playerPos;
+        mapState.functionBlocks = functionBlocks;
 
         foreach (var functionBlock in _levelGenerator.FunctionBlocks)
         {
@@ -187,9 +215,10 @@ public partial class World : Node2D
         }
 
         MapState mapState = _mapHistory.Pop();
-
+        
         player.GlobalPosition = mapState.PlayerPos;
-
+        player.FunctionBlockInfos = mapState.functionBlocks;
+        
         foreach (var functionBlock in _levelGenerator.FunctionBlocks)
         {
             foreach (var functionBlockMapInfo in mapState.FunctionBlockMapInfos)
@@ -209,6 +238,7 @@ public partial class World : Node2D
 class MapState
 {
     public Vector2 PlayerPos;
+    public Dictionary<Actor.Direction, FunctionBlockInfo> functionBlocks;
     public List<FunctionBlockMapInfo> FunctionBlockMapInfos = new List<FunctionBlockMapInfo>();
 }
 

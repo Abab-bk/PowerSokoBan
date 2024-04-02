@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using PowerSokoBan.Scripts.Classes;
 
 namespace PowerSokoBan.Scripts;
 
@@ -19,5 +20,7 @@ public partial class StartMenu : Control
         {
             GetTree().Quit();
         };
+        
+        
     }
 }

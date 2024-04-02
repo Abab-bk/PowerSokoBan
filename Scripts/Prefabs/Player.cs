@@ -143,7 +143,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Left);
-            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition, actor.FunctionBlockInfos);
         }
     }
 
@@ -153,7 +153,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Right);
-            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition, actor.FunctionBlockInfos);
         }
     }
 
@@ -163,7 +163,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Up);
-            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition, actor.FunctionBlockInfos);
         }
     }
 
@@ -173,7 +173,7 @@ namespace PowerSokoBan.Scripts.Prefabs
         {
             if (actor.IsMoving()) return;
             actor.MoveTo(Actor.Direction.Down);
-            Master.GetInstance().SaveMapEvent(actor.GlobalPosition);
+            Master.GetInstance().SaveMapEvent(actor.GlobalPosition, actor.FunctionBlockInfos);
         }
     }
 }

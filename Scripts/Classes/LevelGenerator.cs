@@ -12,9 +12,25 @@ public partial class LevelGenerator : Node2D
     [Export]
     private TileMap _tileMap;
 
+    [Export] private Node2D _playerNode;
+    [Export] private Node2D _othersNode;
+
     public List<FunctionBlock> FunctionBlocks = new List<FunctionBlock>();
     
     const int GirdSize = 64;
+
+    public void DestroyAllNodes()
+    {
+        foreach (var child in _playerNode.GetChildren())
+        {
+            child.CallDeferred("queue_free");
+        }
+
+        foreach (var child in _othersNode.GetChildren())
+        {
+            child.CallDeferred("queue_free");
+        }
+    }
 
     public LevelInfo ResetGenerateLevel(string fileName)
     {
@@ -95,7 +111,7 @@ public partial class LevelGenerator : Node2D
                         FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
                         functionBlock.LevelInfo = levelInfo;
                         levelInfo.AddTotalFunctionBlockCount(1);
-                        CallDeferred("add_child", functionBlock);
+                        _othersNode.CallDeferred("add_child", functionBlock);
                         functionBlock.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
                         functionBlock.CallDeferred("RulePosition");
 
@@ -109,7 +125,8 @@ public partial class LevelGenerator : Node2D
                     {
                         Player player = (Player)ActorFactory.CreateActor(ActorType.Player);
                         
-                        CallDeferred("add_child", player);
+                        _playerNode.CallDeferred("add_child", player);
+                        
                         player.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
                         player.CallDeferred("RulePosition");
                         
@@ -120,7 +137,7 @@ public partial class LevelGenerator : Node2D
                     {
                         WinPoint winPoint = (WinPoint)ActorFactory.CreateActor(ActorType.WinPoint);
                         
-                        CallDeferred("add_child", winPoint);
+                        _othersNode.CallDeferred("add_child", winPoint);
                         winPoint.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
                         winPoint.CallDeferred("RulePosition");
                         
@@ -148,7 +165,7 @@ public partial class LevelGenerator : Node2D
                     
                     // Add Wall
                     Wall wall = (Wall)ActorFactory.CreateActor(ActorType.Wall);
-                    CallDeferred("add_child", wall);
+                    _othersNode.CallDeferred("add_child", wall);
                     wall.GlobalPosition = new Vector2(x, y) * GirdSize;
                 }
             }

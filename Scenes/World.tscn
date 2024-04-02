@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c23k0frd5d24m"]
+[gd_scene load_steps=16 format=3 uid="uid://c23k0frd5d24m"]
 
 [ext_resource type="Texture2D" uid="uid://dxssthc04jubt" path="res://Assets/Textures/BkgGreen.png" id="1_3dxu4"]
 [ext_resource type="Script" path="res://Scripts/World.cs" id="1_eef1p"]
@@ -6,6 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://nny21qnauyf8" path="res://Assets/Textures/Map.png" id="2_r87hk"]
 [ext_resource type="PackedScene" uid="uid://brf028sugc1yw" path="res://Scenes/Ui.tscn" id="3_gseis"]
 [ext_resource type="Script" path="res://Scripts/Classes/LevelGenerator.cs" id="5_r4vvb"]
+[ext_resource type="AudioStream" uid="uid://c31as4uoxtiul" path="res://Assets/Audios/Oi.mp3" id="7_41n5t"]
+[ext_resource type="AudioStream" path="res://Assets/Audios/Win.mp3" id="7_tm1xw"]
+[ext_resource type="AudioStream" uid="uid://bljtxsnng8ror" path="res://Assets/Audios/BackGround1.ogg" id="7_ugjb3"]
+[ext_resource type="AudioStream" uid="uid://b814mpkvs6qd0" path="res://Assets/Audios/Click.mp3" id="8_lx8gi"]
+[ext_resource type="AudioStream" uid="uid://blg305uoaln88" path="res://Assets/Audios/Eat.mp3" id="10_m2a21"]
+[ext_resource type="AudioStream" uid="uid://chohlp8w7uy3c" path="res://Assets/Audios/Ding.mp3" id="12_cvduu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yu7uk"]
 texture = ExtResource("1_soy35")
@@ -146,6 +152,32 @@ rendering_quadrant_size = 50
 format = 2
 layer_0/tile_data = PackedInt32Array(-262147, 0, 0, -262146, 0, 0, -262145, 0, 0, -196611, 0, 0, -131075, 0, 0, -65539, 0, 0, -3, 0, 0, -327680, 0, 0, -327679, 0, 0, -262143, 0, 0, -131071, 0, 0, -196606, 0, 0, -262142, 0, 0, -327678, 0, 0, -131070, 0, 0, -65534, 0, 0, 65533, 0, 0, 131069, 0, 0, 2, 0, 0, -327677, 0, 0, -262141, 0, 0, -196605, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, 131075, 0, 0, 196605, 0, 0, 196604, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131076, 0, 0, -196612, 0, 0, -262148, 0, 0, -327684, 0, 0, -327683, 0, 0, -327682, 0, 0, -327681, 0, 0, -393216, 0, 0, -393215, 0, 0, -393214, 0, 0, -393213, 0, 0)
 
-[node name="LevelGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_tileMap")]
+[node name="LevelGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_tileMap", "_playerNode", "_othersNode")]
 script = ExtResource("5_r4vvb")
 _tileMap = NodePath("../TileMap")
+_playerNode = NodePath("PlayerNode")
+_othersNode = NodePath("OthersNode")
+
+[node name="OthersNode" type="Node2D" parent="LevelGenerator"]
+
+[node name="PlayerNode" type="Node2D" parent="LevelGenerator"]
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_ugjb3")
+
+[node name="Move" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_lx8gi")
+
+[node name="Shock" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_41n5t")
+
+[node name="Win" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_tm1xw")
+
+[node name="Eat" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("10_m2a21")
+
+[node name="Click" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("12_cvduu")
