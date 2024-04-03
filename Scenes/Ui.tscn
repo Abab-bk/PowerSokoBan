@@ -1,16 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://brf028sugc1yw"]
+[gd_scene load_steps=13 format=3 uid="uid://brf028sugc1yw"]
 
 [ext_resource type="Theme" uid="uid://r67lnexwgig7" path="res://Assets/Themes/Default.tres" id="1_krbfs"]
 [ext_resource type="Script" path="res://Scripts/Ui.cs" id="1_nubap"]
 [ext_resource type="Texture2D" uid="uid://bjx2f1bawdtfi" path="res://Assets/Ui/Buttons/SettingBtn.png" id="2_21pxs"]
 [ext_resource type="Texture2D" uid="uid://ddkjqgjwirnyj" path="res://Assets/Ui/Buttons/UndoLevelBtn.png" id="2_yapai"]
 [ext_resource type="Texture2D" uid="uid://bnpcnrqrt0ndd" path="res://Assets/Ui/Buttons/SettingBtnPressed.png" id="3_7rb8a"]
+[ext_resource type="Texture2D" uid="uid://b4k6usi83y4qc" path="res://Assets/Ui/Buttons/StoreBtn.png" id="3_dqwa8"]
 [ext_resource type="Texture2D" uid="uid://cia0tm76ftru0" path="res://Assets/Ui/Buttons/UndoLevelBtnPressed.png" id="3_h5kei"]
+[ext_resource type="Texture2D" uid="uid://dnc8c2jjss4jb" path="res://Assets/Ui/Buttons/StoreBtnPressed.png" id="4_q5v81"]
 [ext_resource type="Texture2D" uid="uid://7101udlf8cb3" path="res://Assets/Ui/Buttons/ResetLevelBtn.png" id="4_r0aok"]
 [ext_resource type="Texture2D" uid="uid://cr2m1gjnftbri" path="res://Assets/Ui/Buttons/ResetLevelBtnPressed.png" id="5_s26rm"]
 [ext_resource type="PackedScene" uid="uid://ca567sh2vuaxy" path="res://Scenes/Setting.tscn" id="8_x1gcb"]
+[ext_resource type="PackedScene" uid="uid://bc5wowa5ywfok" path="res://Scenes/Store.tscn" id="10_k6pc6"]
 
-[node name="UI" type="Control" node_paths=PackedStringArray("_label", "_undoButton", "_restartButton", "_settingBtn", "_settingPanel")]
+[node name="UI" type="Control" node_paths=PackedStringArray("_label", "_undoButton", "_restartButton", "_settingBtn", "_storeBtn", "_settingPanel", "_storePanel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,8 +25,10 @@ script = ExtResource("1_nubap")
 _label = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Label")
 _undoButton = NodePath("MarginContainer/VBoxContainer/Buttons/UndoBtn")
 _restartButton = NodePath("MarginContainer/VBoxContainer/Buttons/RestartBtn")
-_settingBtn = NodePath("MarginContainer/VBoxContainer/HBoxContainer/SettingBtn")
+_settingBtn = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Buttons/SettingBtn")
+_storeBtn = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Buttons/StoreBtn")
 _settingPanel = NodePath("Setting")
+_storePanel = NodePath("Store")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -53,7 +58,17 @@ text = "🔑: 1/10"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SettingBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="StoreBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+texture_normal = ExtResource("3_dqwa8")
+texture_pressed = ExtResource("4_q5v81")
+stretch_mode = 3
+
+[node name="SettingBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer/Buttons"]
 layout_mode = 2
 texture_normal = ExtResource("2_21pxs")
 texture_pressed = ExtResource("3_7rb8a")
@@ -78,5 +93,9 @@ texture_normal = ExtResource("4_r0aok")
 texture_pressed = ExtResource("5_s26rm")
 
 [node name="Setting" parent="." instance=ExtResource("8_x1gcb")]
+visible = false
+layout_mode = 1
+
+[node name="Store" parent="." instance=ExtResource("10_k6pc6")]
 visible = false
 layout_mode = 1

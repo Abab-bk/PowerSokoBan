@@ -11,7 +11,9 @@ public partial class Ui : Control
     [Export] private TextureButton _undoButton;
     [Export] private TextureButton _restartButton;
     [Export] private TextureButton _settingBtn;
+    [Export] private TextureButton _storeBtn;
     [Export] private Control _settingPanel;
+    [Export] private Control _storePanel;
     
     private LevelInfo _levelInfo;
     
@@ -29,8 +31,22 @@ public partial class Ui : Control
         };
         _settingBtn.Pressed += delegate
         {
+            Master.GetInstance().PlaySoundEvent(Audios.Click);
             Master.GetInstance().OpenSettingUi = true;
             _settingPanel.Show();
+        };
+        _storeBtn.Pressed += delegate
+        {
+            Master.GetInstance().PlaySoundEvent(Audios.Click);
+            _storePanel.Show();
+            Master.GetInstance().OpenSettingUi = true;
+        };
+
+        Master.GetInstance().ShowPopupEvent = (popupInfo) =>
+        {
+            Popup popup = GD.Load<PackedScene>("res://Scenes/Popup.tscn").Instantiate<Popup>();
+            popup.PopupInfo = popupInfo;
+            AddChild(popup);
         };
     }
 

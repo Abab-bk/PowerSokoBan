@@ -14,7 +14,7 @@ config/name="PowerSokoban"
 run/main_scene="res://Scenes/Enter.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://Assets/Icon.png"
 
 [display]
 

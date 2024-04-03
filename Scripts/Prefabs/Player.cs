@@ -9,6 +9,7 @@ namespace PowerSokoBan.Scripts.Prefabs
     public partial class Player : Actor
     {
         [Export] private SwipeDetector _swipeDetector;
+        [Export] private Sprite2D _playerSprite;
         
         private Godot.Collections.Dictionary<Direction, Sprite2D> _directionSprites;
         
@@ -37,6 +38,24 @@ namespace PowerSokoBan.Scripts.Prefabs
             
             _swipeDetector.Swiped += MoveCommandByDir;
             _swipeDetector.SwipedCanceled += delegate { };
+
+            Master.CurrentSkinChangedEvent += delegate
+            {
+                Master.SaveSkinFile();
+                if (Master.CurrentSkin == "Default")
+                {
+                    _playerSprite.Texture = GD.Load<Texture2D>("res://Assets/Textures/Skins/Baby.png");
+                    return;
+                }
+                
+                _playerSprite.Texture = GD.Load<Texture2D>("res://Assets/Textures/Skins/" + Master.CurrentSkin + ".png");
+            };
+            
+            if (Master.GetInstance().LoadSkinFile())
+            {
+                Master.GetInstance().CurrentSkinChangedEvent();
+                Master.UpdateStoreUiEvent();
+            }
         }
 
         private void MoveCommandByDir(Vector2 dir)

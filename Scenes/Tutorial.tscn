@@ -66,7 +66,8 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 70
 text = "✋➡📱➡🚶
 👶➡🦶⏭⬛
-(滑动屏幕走路，吃到脚可以跳一格)"
+🇿🔙 🇷♻
+(滑动屏幕走路，吃到脚可以跳一格，Z撤销，R重开)"
 horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="Tutorial/Panel/MarginContainer/VBoxContainer2"]

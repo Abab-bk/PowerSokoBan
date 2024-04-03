@@ -2,12 +2,9 @@
 
 [ext_resource type="Script" path="res://Scripts/Prefabs/Player.cs" id="1_6s7uw"]
 [ext_resource type="Texture2D" uid="uid://daqan8rbrsx2p" path="res://Assets/Textures/Player.png" id="2_ewdf3"]
+[ext_resource type="Texture2D" uid="uid://bfcmgfrmf1hri" path="res://Assets/Textures/Skins/Baby.png" id="2_lcueh"]
 [ext_resource type="Script" path="res://Scripts/Prefabs/Components/ActorBody.cs" id="3_jtrh1"]
 [ext_resource type="Script" path="res://Scripts/Prefabs/Components/SwipeDetector.cs" id="4_82kq7"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lacxu"]
-atlas = ExtResource("2_ewdf3")
-region = Rect2(0, 256, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h0isp"]
 atlas = ExtResource("2_ewdf3")
@@ -21,14 +18,16 @@ size = Vector2(60, 60)
 resource_local_to_scene = true
 size = Vector2(60, 60)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("_swipeDetector")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("_swipeDetector", "_playerSprite")]
 script = ExtResource("1_6s7uw")
 _swipeDetector = NodePath("SwipeDetector")
+_playerSprite = NodePath("Node2D/Ground")
 
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Ground" type="Sprite2D" parent="Node2D"]
-texture = SubResource("AtlasTexture_lacxu")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_lcueh")
 
 [node name="Outline" type="Sprite2D" parent="Node2D"]
 texture = SubResource("AtlasTexture_h0isp")
