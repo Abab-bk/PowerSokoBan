@@ -136,6 +136,11 @@ public partial class World : Node2D
         Master.GetInstance().CanEnterNextLevel = false;
         _ui.SetLevelInfo(levelInfo);
         UpdateUi();
+
+        if (Master.GetInstance().SawTutorial == false && _currentLevelIndex == 0)
+        {
+            AddChild(GD.Load<PackedScene>("res://Scenes/Tutorial.tscn").Instantiate());
+        }
     }
     
     private string GetNextLevelName()
@@ -177,6 +182,7 @@ public partial class World : Node2D
     {
         ConfigFile config = new ConfigFile();
         config.SetValue("Game", "CurrentLevelIndex", _currentLevelIndex);
+        config.SetValue("Game", "SawTutorial", Master.GetInstance().SawTutorial);
         config.Save(SavePath);
     }
 
@@ -188,6 +194,7 @@ public partial class World : Node2D
         if (error != Error.Ok) return false;
         
         _currentLevelIndex = (int)config.GetValue("Game", "CurrentLevelIndex", -1);
+        Master.GetInstance().SawTutorial = (bool)config.GetValue("Game", "SawTutorial", false);
         ResetCurrentLevel();
         return true;
     }

@@ -74,7 +74,8 @@ public partial class Setting : Control
 
         if (error != Error.Ok) return false;
         
-        _enabledMusic = (bool)config.GetValue("Game", "EnabledMusic", true);
+        _enabledMusic = (bool)config.GetValue("System", "EnabledMusic", true);
+        
         return true;
     }
 }

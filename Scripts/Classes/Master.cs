@@ -9,7 +9,8 @@ public class Master
     public Actor.Direction PlayerLastDirection { get; set; }
     public Player Player;
     public bool OpenSettingUi = false;
-        
+    public bool SawTutorial;
+    
     public delegate void EnterNextLevelEventHandler(int value);
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();
