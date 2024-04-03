@@ -8,12 +8,14 @@ public class Master
     private static Master _instance;
     public Actor.Direction PlayerLastDirection { get; set; }
     public Player Player;
-
+    public bool OpenSettingUi = false;
+        
     public delegate void EnterNextLevelEventHandler(int value);
     public delegate void UpdateUiEventHandler();
     public delegate void ResetCurrentLevelEventHandler();
     public delegate void SaveMapEventHandler(Vector2 playerPos, System.Collections.Generic.Dictionary<Actor.Direction, FunctionBlockInfo> functionBlockInfos);
     public delegate void LoadMapEventHandler(Player player);
+    public delegate void BackToMainMenuEventHandler();
 
     public delegate void PlaySoundHandler(Audios audio);
 
@@ -26,6 +28,7 @@ public class Master
     public LoadMapEventHandler LoadMapEvent;
     public GetActorByPosHandler GetActorByPosEvent;
     public PlaySoundHandler PlaySoundEvent;
+    public BackToMainMenuEventHandler BackToMainMenuEvent;
 
     public bool CanEnterNextLevel;
     

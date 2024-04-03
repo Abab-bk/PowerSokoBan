@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://brf028sugc1yw" path="res://Scenes/Ui.tscn" id="3_gseis"]
 [ext_resource type="Script" path="res://Scripts/Classes/LevelGenerator.cs" id="5_r4vvb"]
 [ext_resource type="AudioStream" uid="uid://c31as4uoxtiul" path="res://Assets/Audios/Oi.mp3" id="7_41n5t"]
-[ext_resource type="AudioStream" path="res://Assets/Audios/Win.mp3" id="7_tm1xw"]
+[ext_resource type="AudioStream" uid="uid://b6qv1bycqhowl" path="res://Assets/Audios/Win.mp3" id="7_tm1xw"]
 [ext_resource type="AudioStream" uid="uid://bljtxsnng8ror" path="res://Assets/Audios/BackGround1.ogg" id="7_ugjb3"]
 [ext_resource type="AudioStream" uid="uid://b814mpkvs6qd0" path="res://Assets/Audios/Click.mp3" id="8_lx8gi"]
 [ext_resource type="AudioStream" uid="uid://blg305uoaln88" path="res://Assets/Audios/Eat.mp3" id="10_m2a21"]
@@ -123,10 +123,10 @@ script = ExtResource("1_eef1p")
 _levelGenerator = NodePath("LevelGenerator")
 _ui = NodePath("CanvasLayer/UI")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="Background"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,7 +134,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+[node name="TextureRect" type="TextureRect" parent="Background/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -143,6 +143,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_3dxu4")
 stretch_mode = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("3_gseis")]
 

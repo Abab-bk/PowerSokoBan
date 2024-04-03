@@ -10,7 +10,9 @@ public partial class Ui : Control
     private Label _label;
     [Export] private TextureButton _undoButton;
     [Export] private TextureButton _restartButton;
-
+    [Export] private TextureButton _settingBtn;
+    [Export] private Control _settingPanel;
+    
     private LevelInfo _levelInfo;
     
     public override void _Ready()
@@ -25,6 +27,11 @@ public partial class Ui : Control
             Master.GetInstance().PlaySoundEvent(Audios.Click);
             Master.GetInstance().ResetCurrentLevelEvent();
         };
+        _settingBtn.Pressed += delegate
+        {
+            Master.GetInstance().OpenSettingUi = true;
+            _settingPanel.Show();
+        };
     }
 
     public void SetLevelInfo(LevelInfo levelInfo)
@@ -35,6 +42,6 @@ public partial class Ui : Control
     public void UpdateUi()
     {
         // 第 1 关   收集：1/2
-        _label.Text = $"第 {_levelInfo.Id} 关   收集：{_levelInfo.GetGotFunctionBlockCount()}/{_levelInfo.GetTotalFunctionBlockCount()}";
+        _label.Text = $"\ud83d\udcf4\ud83d\udcb3 {_levelInfo.Id}  🔑 {_levelInfo.GetGotFunctionBlockCount()}/{_levelInfo.GetTotalFunctionBlockCount()}";
     }
 }

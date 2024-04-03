@@ -1,0 +1,52 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://r67lnexwgig7"]
+
+[ext_resource type="FontFile" uid="uid://c46d2d1emcy3f" path="res://Assets/Fonts/NotoEmoji-Bold.ttf" id="1_lupvh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rxakk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htdg0"]
+bg_color = Color(0.972549, 0.972549, 0.960784, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.137255, 0.32549, 0.509804, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1exk6"]
+bg_color = Color(0.784314, 0.784314, 0.705882, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.137255, 0.32549, 0.509804, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bga6a"]
+bg_color = Color(0.92549, 0.913725, 0.847059, 1)
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.00392157, 0.352941, 0.921569, 1)
+
+[resource]
+default_font = ExtResource("1_lupvh")
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0.207843, 0.207843, 0.207843, 1)
+Button/colors/font_pressed_color = Color(0.247059, 0.247059, 0.247059, 1)
+Button/colors/icon_focus_color = Color(0, 0, 0, 1)
+Button/styles/focus = SubResource("StyleBoxEmpty_rxakk")
+Button/styles/hover = SubResource("StyleBoxFlat_htdg0")
+Button/styles/normal = SubResource("StyleBoxFlat_htdg0")
+Button/styles/pressed = SubResource("StyleBoxFlat_1exk6")
+Label/colors/font_color = Color(0, 0, 0, 1)
+Panel/styles/panel = SubResource("StyleBoxFlat_bga6a")

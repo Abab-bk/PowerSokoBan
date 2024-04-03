@@ -17,5 +17,6 @@ public class SceneManager
         }
 
         node.GetTree().Root.CallDeferred("add_child", loadedNode);
+        node.CallDeferred("queue_free");
     }
 }

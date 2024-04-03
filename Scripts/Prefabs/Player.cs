@@ -41,6 +41,8 @@ namespace PowerSokoBan.Scripts.Prefabs
 
         private void MoveCommandByDir(Vector2 dir)
         {
+            if (Master.OpenSettingUi) return;
+            
             if (dir == Vector2.Left)
             {
                 _rightMoveCommand.Execute(this);

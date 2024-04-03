@@ -36,8 +36,25 @@ public partial class World : Node2D
         Master.GetInstance().PlaySoundEvent = PlaySound;
         
         Master.GetInstance().PlaySoundEvent(Audios.BackgroundMusic);
+        Master.GetInstance().BackToMainMenuEvent += BackToMainMenu;
     }
-    
+
+    private void BackToMainMenu()
+    {
+        Master master = Master.GetInstance();
+
+        master.ResetCurrentLevelEvent -= ResetCurrentLevel;
+        master.UpdateUiEvent -= UpdateUi;
+        master.EnterNextLevelEvent -= EnterNextLevel;
+        master.SaveMapEvent -= SaveMap;
+        master.LoadMapEvent -= LoadMap;
+        master.GetActorByPosEvent -= GetActorByPos;
+        master.PlaySoundEvent -= PlaySound;
+        master.BackToMainMenuEvent -= BackToMainMenu;
+        
+        SceneManager.ChangeSceneTo(this, "res://Scenes/StartMenu.tscn");
+    }
+
     private void PlaySound(Audios audio)
     {
         switch (audio)
