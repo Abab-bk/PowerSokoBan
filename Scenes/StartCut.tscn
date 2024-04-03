@@ -1,8 +1,73 @@
-[gd_scene load_steps=7 format=3 uid="uid://by1g76lfkqbps"]
+[gd_scene load_steps=9 format=3 uid="uid://by1g76lfkqbps"]
 
 [ext_resource type="Texture2D" uid="uid://dbxutqeb1vifn" path="res://Assets/Ui/AcidWallLogo.png" id="1_bcvc0"]
 [ext_resource type="Script" path="res://Scripts/StartCut.cs" id="1_j2oxp"]
 [ext_resource type="Texture2D" uid="uid://1a0xjcpvepae" path="res://Assets/Ui/GodotLogo.png" id="2_bv1vc"]
+[ext_resource type="Texture2D" uid="uid://cgm7v4s18wu5u" path="res://Assets/Ui/blue 50.png" id="3_3mu65"]
+[ext_resource type="Texture2D" uid="uid://cdvliakdytxmf" path="res://Assets/Ui/Logo.png" id="4_21tl8"]
+
+[sub_resource type="Animation" id="Animation_fhge4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Logo:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GodotLogo:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Content:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Logo:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GodotLogo:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_wkqvw"]
 resource_name = "run"
@@ -32,32 +97,41 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_fhge4"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Logo:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Content:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("GodotLogo:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Logo:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GodotLogo:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rxvyn"]
@@ -84,6 +158,36 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.286275, 0.654902, 1)
+
+[node name="Content" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 200
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+
+[node name="GameLogo" type="TextureRect" parent="Content/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_21tl8")
+stretch_mode = 5
+
+[node name="Control" type="Control" parent="Content/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LoginBtn" type="TextureButton" parent="Content/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_3mu65")
+stretch_mode = 5
 
 [node name="Logo" type="TextureRect" parent="."]
 layout_mode = 1

@@ -16,6 +16,11 @@ config/features=PackedStringArray("4.2", "C#", "Mobile")
 boot_splash/show_image=false
 config/icon="res://Assets/Icon.png"
 
+[autoload]
+
+GodotTapTap="*res://addons/GodotTapTapSDK/GodotTapTap.gd"
+PockAD="*res://addons/FlowerPockAD/PockAD.gd"
+
 [display]
 
 window/size/viewport_width=1920
@@ -32,6 +37,10 @@ project/assembly_name="PowerSokoBan"
 [editor]
 
 naming/scene_name_casing=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/FlowerPockAD/plugin.cfg", "res://addons/GodotPrivacyPlugin/plugin.cfg", "res://addons/GodotTapTapSDK/plugin.cfg")
 
 [input]
 
