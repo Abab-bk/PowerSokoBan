@@ -125,7 +125,10 @@ public partial class World : Node2D
         }
         
         SaveGame();
-        LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(GetNextLevelName());
+        string levelName = GetNextLevelName();
+        if (levelName == "") return;
+        
+        LevelInfo levelInfo = _levelGenerator.ResetGenerateLevel(levelName);
         
         if (levelInfo == null)
         {
@@ -168,6 +171,7 @@ public partial class World : Node2D
         if (_currentLevelIndex >= _allLevels.Count)
         {
             throw new IndexOutOfRangeException("没有更多关卡了");
+            return "";
         }
 
         return _allLevels[_currentLevelIndex].FileName;

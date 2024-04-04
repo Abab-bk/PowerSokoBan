@@ -23,7 +23,8 @@ public partial class LevelGenerator : Node2D
     {
         foreach (var child in _playerNode.GetChildren())
         {
-            child.CallDeferred("queue_free");
+            Player player = child as Player;
+            player.Destroy();
         }
 
         foreach (var child in _othersNode.GetChildren())
@@ -146,7 +147,7 @@ public partial class LevelGenerator : Node2D
 
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.HiddenWall)
                     {
-                        _tileMap.SetCell(0, new Vector2I(x, y), 0);
+                        continue;
                     }
                     
                     // // TODO: Add Swap.

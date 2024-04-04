@@ -11,40 +11,43 @@ public partial class StartCut : Control
     
     public override void _Ready()
     {
-        _taptap = GetNode<Node>("/root/GodotTapTap");
-        _taptap.Connect("onLoginResult", new Callable(this, nameof(OnLoginResult)));
-        _taptap.Call("onAntiAddictionCallback", new Callable(this, nameof(OnAntiAddictionCallback)));
+        _taptap = GetNode<Node>("/root/Tap");
+        _taptap.Connect("logined", new Callable(this, nameof(LoginDone)));
+        _taptap.Connect("anti_pass", new Callable(this, nameof(AntiAddictionPass)));
         
         _animationPlayer.AnimationFinished += delegate
         {
-            if ((bool)_taptap.Call("isLogin"))
+            GD.Print(_taptap);
+            if (OS.GetName() != "Android")
             {
-                CheckAntiAddiction();
+                SceneManager.ChangeSceneTo(this, "res://Scenes/StartMenu.tscn");
             }
+
+            _taptap.Call("is_login");
         };
         
         _animationPlayer.Play("run");
 
         _loginBtn.Pressed += delegate
         {
-            _taptap.Call("tap_login");
+            _taptap.Call("login");
         };
     }
 
-    private void OnLoginResult(int code, string json)
+    private void AntiAddictionPass()
     {
-        GD.Print("登录结果：", code, json);
+        SceneManager.ChangeSceneTo(this, "res://Scenes/StartMenu.tscn");
+    }
+
+    private void LoginDone()
+    {
+        _taptap.Call("init_tap_anti");
         CheckAntiAddiction();
     }
 
-    private void OnAntiAddictionCallback(int code)
-    {
-        if (code != 500) return;
-        SceneManager.ChangeSceneTo(this, "res://Scenes/StartMenu.tscn");
-    }
-    
+
     private void CheckAntiAddiction()
     {
-        _taptap.Call("quickCheck");
+        _taptap.Call("quick_anti");
     }
 }

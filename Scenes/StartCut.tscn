@@ -140,7 +140,7 @@ _data = {
 "run": SubResource("Animation_wkqvw")
 }
 
-[node name="StartCut" type="Control" node_paths=PackedStringArray("_animationPlayer")]
+[node name="StartCut" type="Control" node_paths=PackedStringArray("_animationPlayer", "_loginBtn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,6 +149,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_j2oxp")
 _animationPlayer = NodePath("AnimationPlayer")
+_loginBtn = NodePath("Content/VBoxContainer/LoginBtn")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1

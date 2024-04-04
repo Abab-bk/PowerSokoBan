@@ -18,10 +18,9 @@ size = Vector2(60, 60)
 resource_local_to_scene = true
 size = Vector2(60, 60)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("_swipeDetector", "_playerSprite")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("_swipeDetector")]
 script = ExtResource("1_6s7uw")
 _swipeDetector = NodePath("SwipeDetector")
-_playerSprite = NodePath("Node2D/Ground")
 
 [node name="Node2D" type="Node2D" parent="."]
 
