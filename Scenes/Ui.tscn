@@ -63,7 +63,6 @@ layout_mode = 2
 theme_override_constants/separation = 40
 
 [node name="StoreBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer/Buttons"]
-visible = false
 layout_mode = 2
 texture_normal = ExtResource("3_dqwa8")
 texture_pressed = ExtResource("4_q5v81")

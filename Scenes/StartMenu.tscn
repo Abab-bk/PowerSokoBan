@@ -57,6 +57,21 @@ texture = ExtResource("1_8g6lu")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="Logo" type="TextureRect" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -920.0
+offset_top = 538.0
+offset_right = 920.0
+offset_bottom = 538.0
+grow_horizontal = 2
+size_flags_vertical = 0
+texture = ExtResource("6_3a5lw")
+expand_mode = 1
+stretch_mode = 3
+
 [node name="Content" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -69,18 +84,6 @@ theme_override_constants/margin_right = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content"]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="Content/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Logo" type="TextureRect" parent="Content/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("6_3a5lw")
-stretch_mode = 5
 
 [node name="Control" type="Control" parent="Content/VBoxContainer"]
 layout_mode = 2
