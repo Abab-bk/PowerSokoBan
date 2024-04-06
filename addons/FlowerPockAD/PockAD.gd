@@ -1,6 +1,6 @@
 extends Node
 
-const APP_ID:String = "xxx"
+const APP_ID:String = "12935"
 
 signal get_reward
 signal reward_skip
@@ -28,5 +28,8 @@ func _ready():
         print("Couldn't find plugin " + _plugin_name)
 
 
-func show_reward_video_ad(_ad_id:String = "xxx") -> void:
+func show_reward_video_ad(_ad_id:String = "57794") -> void:
+    if not _android_plugin:
+        reward_failed.emit()
+        return
     _android_plugin.ShowRewardVideoAd(_ad_id)

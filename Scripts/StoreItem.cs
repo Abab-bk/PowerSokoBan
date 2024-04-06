@@ -8,8 +8,11 @@ public partial class StoreItem : Panel
     [Export] private TextureRect _textureRect;
     [Export] private TextureRect _unlockSign;
     [Export] private Button _button;
+
+    private Node _pockAd;
     
     private bool _isUnlocked = false;
+    private bool _needUnlock = false;
     
     public string Id;
 
@@ -17,6 +20,43 @@ public partial class StoreItem : Panel
     {
         _button.Pressed += Pressed;
         Master.GetInstance().UpdateStoreUiEvent += UpdateUi;
+        _pockAd = GetNode<Node>("/root/PockAD");
+        _pockAd.Connect("get_reward", new Callable(this, nameof(GetReward)));
+        _pockAd.Connect("reward_skip", new Callable(this, nameof(ClosedReward)));
+        _pockAd.Connect("rewrad_closed", new Callable(this, nameof(ClosedReward)));
+        _pockAd.Connect("reward_failed", new Callable(this, nameof(ClosedReward)));
+    }
+
+    private void ClosedReward()
+    {
+        if (_needUnlock == false) return;
+        _needUnlock = false;
+        Master.GetInstance().ShowPopupEvent(new PopupInfo(
+            "\ud83d\ude1e",
+            "\ud83c\ude1a\ud83c\udfc6\u27a1\ud83c\ude1a\ud83d\udc40\ud83d\udcfa",
+            false,
+            delegate { },
+            delegate { }
+        ));
+    }
+    
+    private void GetReward()
+    {
+        if (_needUnlock == false) return;
+        
+        Master.GetInstance().ShowPopupEvent(new PopupInfo(
+            "\u270c",
+            "\ud83c\udfc6\ud83c\udfc6\ud83c\udfc6",
+            false,
+            delegate { },
+            delegate { }
+        ));
+        
+        _needUnlock = false;
+        _isUnlocked = true;
+        Master.GetInstance().OpenedSkins.Add(Id);
+        UpdateUi();
+        Master.GetInstance().SaveSkinFile();
     }
 
     private void Pressed()
@@ -53,9 +93,8 @@ public partial class StoreItem : Panel
             delegate
             {
                 GD.Print("购买 " + Id + " 皮肤");
-                _isUnlocked = true;
-                Master.GetInstance().OpenedSkins.Add(Id);
-                UpdateUi();
+                _needUnlock = true;
+                _pockAd.Call("show_reward_video_ad");
             },
 
             delegate

@@ -31,13 +31,19 @@ public partial class Popup : Control
         _yesBtn.Pressed += delegate
         {
             Master.GetInstance().PlaySoundEvent(Audios.Click);
-            popupInfo.YesEvent.Invoke();
+            if (popupInfo.YesEvent != null)
+            {
+                popupInfo.YesEvent.Invoke();
+            }
             QueueFree();
         };
         _closeBtn.Pressed += delegate
         {
             Master.GetInstance().PlaySoundEvent(Audios.Click);
-            popupInfo.CloseEvent.Invoke();
+            if (popupInfo.CloseEvent != null)
+            {
+                popupInfo.CloseEvent.Invoke();
+            }
             QueueFree();
         };
     }

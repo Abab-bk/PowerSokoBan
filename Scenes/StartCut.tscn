@@ -68,6 +68,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("GameLogo:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_wkqvw"]
 resource_name = "run"
@@ -133,6 +145,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true, false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("GameLogo:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rxvyn"]
 _data = {
@@ -160,6 +184,20 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.286275, 0.654902, 1)
 
+[node name="GameLogo" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("4_21tl8")
+stretch_mode = 5
+
 [node name="Content" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 1
@@ -175,11 +213,6 @@ theme_override_constants/margin_bottom = 200
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content"]
 layout_mode = 2
-
-[node name="GameLogo" type="TextureRect" parent="Content/VBoxContainer"]
-layout_mode = 2
-texture = ExtResource("4_21tl8")
-stretch_mode = 5
 
 [node name="Control" type="Control" parent="Content/VBoxContainer"]
 layout_mode = 2
@@ -225,3 +258,8 @@ texture = ExtResource("2_bv1vc")
 libraries = {
 "": SubResource("AnimationLibrary_rxvyn")
 }
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
