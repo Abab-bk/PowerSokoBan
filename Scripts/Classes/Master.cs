@@ -32,6 +32,7 @@ public class Master
 
     public delegate Actor GetActorByPosHandler(Vector2 position);
     public delegate void ShowPopupHandler(PopupInfo popupInfo);
+    public delegate void StopAllMusicHandler();
 
     public delegate void UpdateStoreUiHandler();
     
@@ -46,8 +47,12 @@ public class Master
     public ShowPopupHandler ShowPopupEvent;
     public CurrentSkinChangedEventHandler CurrentSkinChangedEvent;
     public UpdateStoreUiHandler UpdateStoreUiEvent;
+    public StopAllMusicHandler StopAllMusicEvent;
 
     public bool CanEnterNextLevel;
+    public Control StartMenu;
+    public List<Vector2> AllowedPositions = new List<Vector2>();
+    public int NeedLoadLevel = 1;
     
     private Master()
     {

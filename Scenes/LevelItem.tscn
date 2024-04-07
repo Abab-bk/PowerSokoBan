@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://sv72dd533xb2"]
+
+[ext_resource type="Theme" uid="uid://r67lnexwgig7" path="res://Assets/Themes/Default.tres" id="1_jnr44"]
+[ext_resource type="Script" path="res://Scripts/LevelItem.cs" id="2_ydro2"]
+[ext_resource type="Texture2D" uid="uid://dmyiv3f41xloh" path="res://Assets/Ui/Signs/OwnedSign.png" id="3_e0k3w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5lwup"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6713"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[node name="LevelItem" type="Panel" node_paths=PackedStringArray("_textureRect", "_button", "_levelLabel")]
+custom_minimum_size = Vector2(200, 200)
+theme = ExtResource("1_jnr44")
+script = ExtResource("2_ydro2")
+_textureRect = NodePath("MarginContainer/MarginContainer/Sign")
+_button = NodePath("Button")
+_levelLabel = NodePath("MarginContainer/LevelLabel")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="LevelLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 120
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 110
+theme_override_constants/margin_right = 110
+
+[node name="Sign" type="TextureRect" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_e0k3w")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5lwup")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_5lwup")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u6713")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_5lwup")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5lwup")

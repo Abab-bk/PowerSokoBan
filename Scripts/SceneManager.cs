@@ -10,12 +10,14 @@ public class SceneManager
 
         if (node is Control control)
         {
+            GD.Print("Hide1");
             control.Hide();
         } else if (node is Node2D node2D)
         {
+            GD.Print("Hide2");
             node2D.Hide();
         }
-
+        
         node.GetTree().Root.CallDeferred("add_child", loadedNode);
         node.CallDeferred("queue_free");
     }

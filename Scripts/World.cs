@@ -196,8 +196,8 @@ public partial class World : Node2D
         Error error = config.Load(SavePath);
 
         if (error != Error.Ok) return false;
-        
-        _currentLevelIndex = (int)config.GetValue("Game", "CurrentLevelIndex", -1);
+
+        _currentLevelIndex = Master.GetInstance().NeedLoadLevel;
         Master.GetInstance().SawTutorial = (bool)config.GetValue("Game", "SawTutorial", false);
         ResetCurrentLevel();
         return true;

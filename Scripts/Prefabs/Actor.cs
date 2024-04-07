@@ -125,8 +125,15 @@ public partial class Actor : Node2D
     private bool AllowMoveTo(Direction dir)
     {
         Actor actor = Master.GetActorByPosEvent(GlobalPosition + _inputs[dir] * GetMoveDistance(dir));
+        
+        if (Master.GetInstance().AllowedPositions
+            .Contains(GlobalPosition + _inputs[dir] * GetMoveDistance(dir)) == false)
+        {
+            GD.Print("false因为不允许行走");
+            return false;
+        }
 
-        if (actor is null)
+        if (actor is null || actor is EmptyActor)
         {
             return true;
         }

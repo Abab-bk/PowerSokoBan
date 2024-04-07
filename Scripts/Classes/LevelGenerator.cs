@@ -42,6 +42,7 @@ public partial class LevelGenerator : Node2D
     {
         _tileMap.Clear();
         FunctionBlocks.Clear();
+        Master.GetInstance().AllowedPositions = new List<Vector2>();
         
         var file = FileAccess.Open("res://Assets/Levels/" + fileName + ".txt", FileAccess.ModeFlags.Read);
         if (file == null)
@@ -98,7 +99,9 @@ public partial class LevelGenerator : Node2D
                                 .SetMapBlockType(MapBlockInfo.MapBlockType.Goal);
                             break;
                         case '.':
-                            continue;
+                            obj = new MapBlockInfo()
+                                .SetMapBlockType(MapBlockInfo.MapBlockType.HiddenWall);
+                            break;
                     }
 
                     if (obj == null)
@@ -106,6 +109,17 @@ public partial class LevelGenerator : Node2D
                         continue;
                     }
 
+                    Vector2 RulePos(Vector2 pos)
+                    {
+                        pos = pos.Snapped(Vector2.One * 64);
+                        pos += Vector2.One * 64 / 2;
+                        return pos;
+                    }
+                    
+                    Master.GetInstance().AllowedPositions.Add(
+                        RulePos(new Vector2(x, y) * GirdSize)
+                        );
+                    
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.FunctionBlock)
                     {
                         id += 1;
@@ -147,27 +161,20 @@ public partial class LevelGenerator : Node2D
 
                     if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.HiddenWall)
                     {
+                        EmptyActor actor = (EmptyActor)ActorFactory.CreateActor(ActorType.EmptyActor);
+                        
+                        _othersNode.CallDeferred("add_child", actor);
+                        actor.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
+                        actor.CallDeferred("RulePosition");
+                        
                         continue;
                     }
-                    
-                    // // TODO: Add Swap.
-                    // if (obj.GetMapBlockType() == MapBlockInfo.MapBlockType.Swap)
-                    // {
-                    //     FunctionBlock functionBlock = (FunctionBlock)ActorFactory.CreateActor(ActorType.FunctionBlockRed, obj.GetValue());
-                    //     functionBlock.LevelInfo = levelInfo;
-                    //     levelInfo.AddTotalFunctionBlockCount(1);
-                    //     CallDeferred("add_child", functionBlock);
-                    //     functionBlock.GlobalPosition = new Vector2I(x, y) * GirdSize;
-                    //     functionBlock.RulePosition();
-                    //     FunctionBlocks.Add(functionBlock);
-                    //
-                    //     continue;
-                    // }
                     
                     // Add Wall
                     Wall wall = (Wall)ActorFactory.CreateActor(ActorType.Wall);
                     _othersNode.CallDeferred("add_child", wall);
-                    wall.GlobalPosition = new Vector2(x, y) * GirdSize;
+                    wall.CallDeferred("set_global_position", new Vector2(x, y) * GirdSize);
+                    wall.CallDeferred("RulePosition");
                 }
             }
         }

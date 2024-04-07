@@ -7,6 +7,7 @@ namespace PowerSokoBan.Scripts.Classes.Factorys;
 public enum ActorType
 {
     None,
+    EmptyActor,
     FunctionBlockRed,
     FunctionBlockBlue,
     FunctionBlockGreen,
@@ -22,6 +23,9 @@ public class ActorFactory
     {
         switch (actorType)
         {
+            case ActorType.EmptyActor:
+                return GD.Load<PackedScene>("res://Scenes/Prefabs/EmptyActor.tscn").Instantiate() as EmptyActor;
+            
             case ActorType.FunctionBlockRed:
                 FunctionBlock functionBlock =
                     GD.Load<PackedScene>("res://Scenes/Prefabs/FunctionBlock.tscn").Instantiate() as FunctionBlock;

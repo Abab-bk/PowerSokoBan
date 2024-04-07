@@ -123,7 +123,7 @@ namespace PowerSokoBan.Scripts.Prefabs
             {
                 if (IsMoving()) return;
                 Master.LoadMapEvent(this);
-                UpdateUi();
+                Master.UpdateUiEvent();
             }
 
             if (Input.IsActionJustPressed("X"))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c7uqre6kr3j4y"]
+[gd_scene load_steps=12 format=3 uid="uid://c7uqre6kr3j4y"]
 
 [ext_resource type="Texture2D" uid="uid://008s1aqg2n1j" path="res://Assets/Ui/ContentBg.png" id="1_8g6lu"]
 [ext_resource type="Script" path="res://Scripts/StartMenu.cs" id="1_ljhg5"]
@@ -10,8 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://d42fen56xryn" path="res://Assets/Ui/Buttons/EndBtnPressed.png" id="5_34bnm"]
 [ext_resource type="Texture2D" uid="uid://cdvliakdytxmf" path="res://Assets/Ui/Logo.png" id="6_3a5lw"]
 [ext_resource type="AudioStream" uid="uid://dn43kduoiq5sw" path="res://Assets/Audios/Background2.ogg" id="8_omoy4"]
+[ext_resource type="PackedScene" uid="uid://oupj8g0u2ckh" path="res://Scenes/SelectLevel.tscn" id="11_ky43e"]
 
-[node name="StartMenu" type="Control" node_paths=PackedStringArray("_startButton", "_exitButton", "_audioStreamPlayer")]
+[node name="StartMenu" type="Control" node_paths=PackedStringArray("_startButton", "_exitButton", "_audioStreamPlayer", "_selectLevel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,6 +23,7 @@ script = ExtResource("1_ljhg5")
 _startButton = NodePath("Content/VBoxContainer/Buttons/StartBtn")
 _exitButton = NodePath("Content/VBoxContainer/Buttons/EndBtn")
 _audioStreamPlayer = NodePath("AudioStreamPlayer")
+_selectLevel = NodePath("SelectLevel")
 
 [node name="ColorRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -103,6 +105,10 @@ texture_pressed = ExtResource("3_uhxt2")
 layout_mode = 2
 texture_normal = ExtResource("4_vh72a")
 texture_pressed = ExtResource("5_34bnm")
+
+[node name="SelectLevel" parent="." instance=ExtResource("11_ky43e")]
+visible = false
+layout_mode = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_omoy4")
